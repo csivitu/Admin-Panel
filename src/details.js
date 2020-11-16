@@ -7,7 +7,7 @@ broker.createService({
   name: 'details',
   actions: {
     async helloWorld () {
-        return( 'Hello World!');
-      }
+      return ('Hello World!')
     }
+  }
 })
