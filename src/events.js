@@ -1,12 +1,10 @@
 const broker = require('../init')
 const Event = require('../models/schema')
 broker.createService({
-  settings: {
-    port: process.env.PORT || '3000'
-  },
+
   name: 'events',
   actions: {
-    async addEvent (req, res) {
+    async add (req, res) {
       try {
         const { eventName, dbType, dbURL } = req.body
         if (dbType !== 'SQL' || dbType !== 'NOSQL') {
@@ -25,8 +23,18 @@ broker.createService({
         return res.send(err)
       }
     },
-
-    async  displayEvent (req, res) {
+    async list (req, res) {
+      try {
+        const events = await Event.find()
+        return res.status(200).json({
+          status: 'success',
+          events
+        })
+      } catch (err) {
+        return res.send(err)
+      }
+    },
+    async  details (req, res) {
       try {
         const event = await Event.find({ eventName: req.body.eventName })
         return res.status(200).json({
