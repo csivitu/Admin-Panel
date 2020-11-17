@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
 
 const eventSchema = new mongoose.Schema({
-  dateOfEvent: { type: Date() },
+  dbType: { type: [String] },
   eventName: { type: [String] },
-  registration: { type: Number, default: 0 }
-
+  dbURL: { type: [String] }
 })
 
 const Event = mongoose.model('Event', eventSchema)

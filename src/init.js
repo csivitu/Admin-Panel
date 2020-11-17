@@ -11,6 +11,7 @@ broker.createService({
   mixins: [ApiService],
   settings: {
     port: process.env.PORT || '3000',
+
     cors: {
       origin: ALLOWED_ORIGINS ? ALLOWED_ORIGINS.split(',') : '*'
     }
