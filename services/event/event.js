@@ -29,7 +29,7 @@ module.exports = {
     },
     get (ctx) {
       try {
-        return Event.findOne({ name: ctx.params.id }, { _id: false })
+        return Event.findOne({ name: ctx.params.name }, { _id: false })
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }
@@ -52,7 +52,7 @@ module.exports = {
     },
     delete (ctx) {
       try {
-        return Event.deleteOne({ name: ctx.params.id })
+        return Event.deleteOne({ name: ctx.params.name })
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }
