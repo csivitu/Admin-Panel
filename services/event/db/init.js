@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
-require('dotenv').config({ path: '../.env' })
 
 mongoose
   .connect(
-    process.env.DB_URL,
+    process.env.DB_URL || 'mongodb+srv://user:pass@cluster0.random.mongodb.net/myapp',
 
     {
       useNewUrlParser: true,
@@ -12,3 +11,4 @@ mongoose
     }
   )
   .then(() => console.log('DB connections successful'))
+  .catch(() => console.log('DB connections failed'))

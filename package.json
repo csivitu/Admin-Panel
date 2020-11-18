@@ -1,23 +1,19 @@
 {
   "name": "adminpanel",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Admin-Panel",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "moleculer-runner --env --hot services/event/event.js services/api/api.js",
+    "deploy:prod": "moleculer-runner --env services/event/event.js services/api/api.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sendgrid/mail": "^7.4.0",
     "dotenv": "^8.2.0",
-    "mailgun-js": "^0.22.0",
     "moleculer": "^0.14.11",
     "moleculer-web": "^0.9.1",
-    "mongoose": "^5.10.14"
+    "mongoose": "^5.10.15"
   },
   "husky": {
     "hooks": {
@@ -30,7 +26,6 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "husky": "^4.3.0",
-    "nodemon": "^2.0.6"
+    "husky": "^4.3.0"
   }
 }
