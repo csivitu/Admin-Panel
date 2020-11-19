@@ -36,7 +36,7 @@ module.exports = {
     },
     async get (ctx) {
       try {
-        const doc = Event.find({ name: ctx.params.name }, { _id: false })
+        const doc = Event.find({ name: Joi.attempt(ctx.params.name, Joi.string()) }, { _id: false })
         if (doc.length !== 1) {
           ctx.meta.$statusCode = 400
           return { error: `Error: no such event with name '${ctx.params.name}' found` }
@@ -56,7 +56,7 @@ module.exports = {
       try {
         const doc = Joi.attempt({ name, dbType, dbURL, date }, joiEventSchema)
         return Event.updateOne({
-          name
+          name: Joi.attempt(name, Joi.string())
         }, doc)
       } catch (err) {
         ctx.meta.$statusCode = 400
@@ -65,7 +65,7 @@ module.exports = {
     },
     delete (ctx) {
       try {
-        return Event.deleteOne({ name: ctx.params.name })
+        return Event.deleteOne({ name: Joi.attempt(ctx.params.name, Joi.string()) })
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }
