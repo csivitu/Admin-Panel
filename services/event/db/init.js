@@ -10,5 +10,8 @@ mongoose
       useUnifiedTopology: true
     }
   )
-  .then(() => console.log('DB connections successful'))
-  .catch(() => console.log('DB connections failed'))
+  .then(() => console.info('DB connections successful'))
+  .catch(() => {
+    console.error('DB connections failed')
+    process.exit()
+  })
