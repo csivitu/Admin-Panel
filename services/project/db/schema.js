@@ -4,8 +4,7 @@ const Joi = require('joi')
 
 const joiProjectSchema = Joi.object({
   name: Joi.string().required().meta({ unique: true }),
-  dbURL: Joi.string().required().meta({ unique: true }),
-  regCount: Joi.number().required().meta({ default: 0 })
+  dbURL: Joi.string().required().meta({ unique: true })
 })
 
 const mongooseProjectSchema = new mongoose.Schema(
