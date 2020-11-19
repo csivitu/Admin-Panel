@@ -13,5 +13,5 @@ mongoose
   .then(() => console.info('DB connections successful'))
   .catch(() => {
     console.error('DB connections failed')
-    process.exit()
+    process.exit(1)
   })
