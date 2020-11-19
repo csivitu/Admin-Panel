@@ -6,12 +6,12 @@ module.exports = {
   name: 'event',
   actions: {
     create (ctx) {
+      const { name, dbType, dbURL, date } = ctx.params
+      if (dbType !== 'SQL' || dbType !== 'NOSQL') {
+        ctx.meta.$statusCode = 400
+        return { error: 'Error: invalid db type' }
+      }
       try {
-        const { name, dbType, dbURL, date } = ctx.params
-        if (dbType !== 'SQL' || dbType !== 'NOSQL') {
-          ctx.meta.$statusCode = 400
-          return { error: 'Error: invalid db type' }
-        }
         const doc = Joi.attempt({
           name, dbType, dbURL, date
         }, joiEventSchema)
@@ -48,12 +48,12 @@ module.exports = {
       }
     },
     update (ctx) {
+      const { name, dbType, dbURL, date } = ctx.params
+      if (dbType !== 'SQL' || dbType !== 'NOSQL') {
+        ctx.meta.$statusCode = 400
+        return { error: 'Error: invalid db type' }
+      }
       try {
-        const { name, dbType, dbURL, date } = ctx.params
-        if (dbType !== 'SQL' || dbType !== 'NOSQL') {
-          ctx.meta.$statusCode = 400
-          return { error: 'Error: invalid db type' }
-        }
         const doc = Joi.attempt({ name, dbType, dbURL, date }, joiEventSchema)
         return Event.updateOne({
           name
