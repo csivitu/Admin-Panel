@@ -4,7 +4,7 @@ const Joi = require('joi')
 
 const joiProjectSchema = Joi.object({
   name: Joi.string().required().meta({ unique: true }),
-  dbURL: Joi.string().required(),
+  dbURL: Joi.string().required().meta({ unique: true }),
   regCount: Joi.number().required().meta({ default: 0 }),
   date: Joi.string().required()
 })
