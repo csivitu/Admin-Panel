@@ -1,11 +1,22 @@
 const mongoose = require('mongoose')
+const Joigoose = require('joigoose')(mongoose)
+const Joi = require('joi')
 
-const eventSchema = new mongoose.Schema({
-  dbType: { type: String, required: true },
-  name: { type: String, required: true, unique: true },
-  dbURL: { type: String, required: true },
-  regCount: { type: Number, required: true, default: 0 },
-  date: { type: String, required: true }
+const joiEventSchema = Joi.object({
+  dbType: Joi.string().required(),
+  name: Joi.string().required().meta({ unique: true }),
+  dbURL: Joi.string().required(),
+  regCount: Joi.number().required().meta({ default: 0 }),
+  date: Joi.string().required()
 })
 
-module.exports = mongoose.model('Event', eventSchema)
+const mongooseEventSchema = new mongoose.Schema(
+  Joigoose.convert(joiEventSchema)
+)
+
+const Event = mongoose.model('Event', mongooseEventSchema)
+
+module.exports = {
+  Event,
+  joiEventSchema
+}

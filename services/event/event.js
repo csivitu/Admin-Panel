@@ -1,5 +1,6 @@
 require('./db/init')
-const Event = require('./db/schema')
+const { Event, joiEventSchema } = require('./db/schema')
+const Joi = require('joi')
 
 module.exports = {
   name: 'event',
@@ -11,25 +12,36 @@ module.exports = {
           ctx.meta.$statusCode = 400
           return { error: 'Error: invalid db type' }
         }
-        return Event.create({
+        const doc = Joi.attempt({
           name, dbType, dbURL, date
-        })
+        }, joiEventSchema)
+        return Event.create(doc)
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }
       }
     },
-    list (ctx) {
+    async list (ctx) {
       try {
-        return Event.find({}, { _id: false, name: true })
+        const docs = await Event.find({}, { _id: false, name: true })
+        if (docs.length === 0) {
+          ctx.meta.$statusCode = 400
+          return { error: 'Error: list is empty' }
+        }
+        return docs
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }
       }
     },
-    get (ctx) {
+    async get (ctx) {
       try {
-        return Event.findOne({ name: ctx.params.name }, { _id: false })
+        const doc = Event.find({ name: ctx.params.name }, { _id: false })
+        if (doc.length !== 1) {
+          ctx.meta.$statusCode = 400
+          return { error: `Error: no such event with name '${ctx.params.name}' found` }
+        }
+        return doc[0]
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }
@@ -42,9 +54,10 @@ module.exports = {
           ctx.meta.$statusCode = 400
           return { error: 'Error: invalid db type' }
         }
+        const doc = Joi.attempt({ name, dbType, dbURL, date }, joiEventSchema)
         return Event.updateOne({
           name
-        }, { name, dbType, dbURL, date })
+        }, doc)
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }
