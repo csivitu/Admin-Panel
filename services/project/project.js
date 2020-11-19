@@ -1,5 +1,4 @@
-require('./db/init')
-const { Project, joiProjectSchema } = require('./db/schema')
+const { Project, joiProjectSchema } = require('../../db/schema')
 const Joi = require('joi')
 
 module.exports = {

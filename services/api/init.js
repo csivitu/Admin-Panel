@@ -1,5 +1,6 @@
-const { ALLOWED_ORIGINS } = process.env
+require('../../db/connect')
 
+const { ALLOWED_ORIGINS } = process.env
 const ApiService = require('moleculer-web')
 
 module.exports = {
