@@ -3,7 +3,6 @@ const Joigoose = require('joigoose')(mongoose)
 const Joi = require('joi')
 
 const joiEventSchema = Joi.object({
-  dbType: Joi.string().required(),
   name: Joi.string().required().meta({ unique: true }),
   dbURL: Joi.string().required(),
   regCount: Joi.number().required().meta({ default: 0 }),
