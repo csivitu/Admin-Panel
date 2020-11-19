@@ -1,21 +1,21 @@
 require('./db/init')
-const { Event, joiEventSchema } = require('./db/schema')
+const { Project, joiProjectSchema } = require('./db/schema')
 const Joi = require('joi')
 
 module.exports = {
-  name: 'event',
+  name: 'project',
   actions: {
     create (ctx) {
-      const { name, dbType, dbURL, date } = ctx.params
-      if (dbType !== 'SQL' || dbType !== 'NOSQL') {
+      const { name, dbURL, date } = ctx.params
+      if (dbURL !== 'SQL' || dbURL !== 'NOSQL') {
         ctx.meta.$statusCode = 400
         return { error: 'Error: invalid db type' }
       }
       try {
         const doc = Joi.attempt({
-          name, dbType, dbURL, date
-        }, joiEventSchema)
-        return Event.create(doc)
+          name, dbURL, date
+        }, joiProjectSchema)
+        return Project.create(doc)
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }
@@ -23,7 +23,7 @@ module.exports = {
     },
     async list (ctx) {
       try {
-        const docs = await Event.find({}, { _id: false, name: true })
+        const docs = await Project.find({}, { _id: false, name: true })
         if (docs.length === 0) {
           ctx.meta.$statusCode = 400
           return { error: 'Error: list is empty' }
@@ -36,10 +36,10 @@ module.exports = {
     },
     async get (ctx) {
       try {
-        const doc = Event.find({ name: Joi.attempt(ctx.params.name, Joi.string()) }, { _id: false })
+        const doc = Project.find({ name: Joi.attempt(ctx.params.name, Joi.string()) }, { _id: false })
         if (doc.length !== 1) {
           ctx.meta.$statusCode = 400
-          return { error: `Error: no such event with name '${ctx.params.name}' found` }
+          return { error: `Error: no such project with name '${ctx.params.name}' found` }
         }
         return doc[0]
       } catch (err) {
@@ -48,14 +48,14 @@ module.exports = {
       }
     },
     update (ctx) {
-      const { name, dbType, dbURL, date } = ctx.params
-      if (dbType !== 'SQL' || dbType !== 'NOSQL') {
+      const { name, dbURL, date } = ctx.params
+      if (dbURL !== 'SQL' || dbURL !== 'NOSQL') {
         ctx.meta.$statusCode = 400
         return { error: 'Error: invalid db type' }
       }
       try {
-        const doc = Joi.attempt({ name, dbType, dbURL, date }, joiEventSchema)
-        return Event.updateOne({
+        const doc = Joi.attempt({ name, dbURL, date }, joiProjectSchema)
+        return Project.updateOne({
           name: Joi.attempt(name, Joi.string())
         }, doc)
       } catch (err) {
@@ -65,7 +65,7 @@ module.exports = {
     },
     delete (ctx) {
       try {
-        return Event.deleteOne({ name: Joi.attempt(ctx.params.name, Joi.string()) })
+        return Project.deleteOne({ name: Joi.attempt(ctx.params.name, Joi.string()) })
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }

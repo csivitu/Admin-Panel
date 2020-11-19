@@ -7,11 +7,11 @@ module.exports = {
   settings: {
     routes: [{
       aliases: {
-        'GET event': 'event.list',
-        'GET event/:name': 'event.get',
-        'POST event': 'event.create',
-        'PUT event/:name': 'event.update',
-        'DELETE event/:name': 'event.remove'
+        'GET project': 'project.list',
+        'GET project/:name': 'project.get',
+        'POST project': 'project.create',
+        'PUT project/:name': 'project.update',
+        'DELETE project/:name': 'project.remove'
       }
     }],
     port: process.env.PORT || '5001',
