@@ -89,8 +89,6 @@ npm install
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Create a `.env` file according to `sample.env` and run the following commands:
-
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
