@@ -32,7 +32,7 @@ module.exports = {
     },
     async get (ctx) {
       try {
-        const doc = Project.find({ name: Joi.attempt(ctx.params.name, Joi.string()) }, { _id: false })
+        const doc = await Project.find({ name: Joi.attempt(ctx.params.name, Joi.string()) }, { _id: false })
         if (doc.length !== 1) {
           ctx.meta.$statusCode = 404
           return { error: 'Error: project not found' }
