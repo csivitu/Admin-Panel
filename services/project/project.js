@@ -21,8 +21,8 @@ module.exports = {
       try {
         const docs = await Project.find({}, { _id: false, name: true })
         if (docs.length === 0) {
-          ctx.meta.$statusCode = 400
-          return { error: 'Error: list is empty' }
+          ctx.meta.$statusCode = 204
+          return []
         }
         return docs
       } catch (err) {
@@ -34,8 +34,8 @@ module.exports = {
       try {
         const doc = Project.find({ name: Joi.attempt(ctx.params.name, Joi.string()) }, { _id: false })
         if (doc.length !== 1) {
-          ctx.meta.$statusCode = 400
-          return { error: `Error: no such project with name '${ctx.params.name}' found` }
+          ctx.meta.$statusCode = 404
+          return { error: 'Error: project not found' }
         }
         return doc[0]
       } catch (err) {
