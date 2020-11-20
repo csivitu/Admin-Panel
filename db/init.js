@@ -6,8 +6,8 @@ mongoose
     useCreateIndex: true,
     useUnifiedTopology: true
   })
-  .then(() => console.info('DB connection successful'))
-  .catch(() => {
-    console.error('DB connection failed')
+  .then(() => console.log({ name: 'Admin-Panel', status: 'Status: connected' }))
+  .catch((e) => {
+    console.error({ name: 'Admin-Panel', error: e.toString() })
     process.exit(1)
   })
