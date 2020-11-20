@@ -1,17 +1,17 @@
-const mongoose = require('mongoose')
+const { Project } = require('./schema')
+const connectSql = require('./connectSql')
+const connectMongo = require('./connectMongo')
 
-mongoose
-  .connect(
-    process.env.DB_URL || 'mongodb+srv://user:pass@cluster0.random.mongodb.net/myapp',
+const liveConnections = {}
 
-    {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true
+Project.find({}, { _id: false }).then(docs => {
+  docs.forEach(doc => {
+    if (doc.dbURL.slice(0, 5) === 'mysql') {
+      liveConnections[doc.name] = { connection: connectSql(doc.dbURL), type: 'mysql' }
+    } else {
+      liveConnections[doc.name] = { connection: connectMongo(doc.dbURL), type: 'mongodb' }
     }
-  )
-  .then(() => console.info('DB connections successful'))
-  .catch(() => {
-    console.error('DB connections failed')
-    process.exit(1)
   })
+})
+
+module.exports = liveConnections

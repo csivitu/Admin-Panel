@@ -1,3 +1,4 @@
+require('../../db/init')
 require('../../db/connect')
 
 const { ALLOWED_ORIGINS } = process.env
