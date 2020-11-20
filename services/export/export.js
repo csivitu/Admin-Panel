@@ -13,7 +13,7 @@ module.exports = {
                 if (error) {
                   reject(error)
                 }
-                resolve(results)
+                resolve(results.map(i => i[Object.keys(i)[0]]))
               })
             })
           } else {
