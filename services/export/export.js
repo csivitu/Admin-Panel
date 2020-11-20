@@ -5,7 +5,8 @@ module.exports = {
   name: 'export',
   actions: {
     async listCollections (ctx) {
-      const { project } = ctx.params.project
+      console.log(liveConnections)
+      const { project } = ctx.params
       if (liveConnections[project]) {
         try {
           if (liveConnections[project].type === 'mysql') {
