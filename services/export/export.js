@@ -1,34 +1,17 @@
+const { sqlExport, nosqlExport, sqlListCollection, nosqlListCollection } = require('./query')
 const liveConnections = require('../../db/connectProjects')
-const Joi = require('joi')
 
 module.exports = {
   name: 'export',
   actions: {
     async listCollections (ctx) {
-      console.log(liveConnections)
       const { project } = ctx.params
       if (liveConnections[project]) {
         try {
           if (liveConnections[project].type === 'mysql') {
-            const collections = await new Promise((resolve, reject) => {
-              liveConnections[project].connection.query('SHOW TABLES', (error, results) => {
-                if (error) {
-                  reject(error)
-                }
-                resolve(results.map(i => i[Object.keys(i)[0]]))
-              })
-            })
-            return collections
+            return sqlExport(project)
           } else {
-            const collections = await new Promise((resolve, reject) => {
-              liveConnections[project].connection.db.listCollections().toArray((error, collections) => {
-                if (error) {
-                  reject(error)
-                }
-                resolve(collections.map(i => i.name))
-              })
-            })
-            return collections
+            return nosqlExport(project)
           }
         } catch (err) {
           ctx.meta.$statusCode = 400
@@ -44,27 +27,9 @@ module.exports = {
       if (liveConnections[project]) {
         try {
           if (liveConnections[project].type === 'mysql') {
-            const collections = await new Promise((resolve, reject) => {
-              liveConnections[project].connection.query('SELECT * FROM ??', [Joi.attempt(collection,
-                Joi.string())], (error, results) => {
-                if (error) {
-                  reject(error)
-                }
-                resolve(results)
-              })
-            })
-            return collections
+            return sqlListCollection(project, collection)
           } else {
-            const collections = await new Promise((resolve, reject) => {
-              liveConnections[project].connection.db.collection(Joi.attempt(collection, Joi.string()))
-                .find().toArray((error, collections) => {
-                  if (error) {
-                    reject(error)
-                  }
-                  resolve(collections)
-                })
-            })
-            return collections
+            return nosqlListCollection(project, collection)
           }
         } catch (err) {
           ctx.meta.$statusCode = 400
