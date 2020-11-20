@@ -9,9 +9,11 @@ module.exports = {
       if (liveConnections[project]) {
         try {
           if (liveConnections[project].type === 'mysql') {
-            return sqlExport(project)
+            const tables = await sqlListCollection(project)
+            return tables
           } else {
-            return nosqlExport(project)
+            const tables = await nosqlListCollection(project)
+            return tables
           }
         } catch (err) {
           ctx.meta.$statusCode = 400
@@ -27,9 +29,15 @@ module.exports = {
       if (liveConnections[project]) {
         try {
           if (liveConnections[project].type === 'mysql') {
-            return sqlListCollection(project, collection)
+            const table = await sqlExport(project, collection)
+            return table
           } else {
-            return nosqlListCollection(project, collection)
+            const table = await nosqlExport(project, collection)
+            if (table.length === 0) {
+              ctx.meta.$statusCode = 404
+              return { error: 'Error: collection not found' }
+            }
+            return table
           }
         } catch (err) {
           ctx.meta.$statusCode = 400

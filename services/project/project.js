@@ -20,10 +20,6 @@ module.exports = {
     async list (ctx) {
       try {
         const docs = await Project.find({}, { _id: false, name: true })
-        if (docs.length === 0) {
-          ctx.meta.$statusCode = 204
-          return []
-        }
         return docs
       } catch (err) {
         ctx.meta.$statusCode = 400
