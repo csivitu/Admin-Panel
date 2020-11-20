@@ -1,5 +1,5 @@
 const { sqlExport, nosqlExport, sqlListCollection, nosqlListCollection } = require('./utils/query')
-const liveConnections = require('../../db/connectProjects')
+const { liveConnections } = require('../../db/connectProjects')
 
 module.exports = {
   name: 'export',

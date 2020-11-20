@@ -1,4 +1,4 @@
-const liveConnections = require('../../../db/connectProjects')
+const { liveConnections } = require('../../../db/connectProjects')
 
 function sqlListCollection (project) {
   return new Promise((resolve, reject) => {

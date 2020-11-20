@@ -1,5 +1,6 @@
 const { Project, joiProjectSchema } = require('../../db/schema')
 const Joi = require('joi')
+const { connectDB, liveConnections } = require('../../db/connectProjects')
 
 module.exports = {
   name: 'project',
@@ -11,6 +12,7 @@ module.exports = {
           name, dbURL
         }, joiProjectSchema)
         const document = await Project.create(doc)
+        connectDB(document)
         return document
       } catch (err) {
         ctx.meta.$statusCode = 400
@@ -46,6 +48,15 @@ module.exports = {
         const document = await Project.updateOne({
           name: Joi.attempt(name, Joi.string())
         }, doc)
+        if (liveConnections[document.name]) {
+          try {
+            liveConnections[document.name].end()
+          } catch {
+            liveConnections[document.name].close()
+          }
+          delete liveConnections[document.name]
+        }
+        connectDB(document)
         return document
       } catch (err) {
         ctx.meta.$statusCode = 400
@@ -55,6 +66,14 @@ module.exports = {
     async delete (ctx) {
       try {
         const document = await Project.deleteOne({ name: Joi.attempt(ctx.params.name, Joi.string()) })
+        if (liveConnections[document.name]) {
+          try {
+            liveConnections[document.name].end()
+          } catch {
+            liveConnections[document.name].close()
+          }
+          delete liveConnections[document.name]
+        }
         return document
       } catch (err) {
         ctx.meta.$statusCode = 400
