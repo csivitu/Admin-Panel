@@ -1,10 +1,11 @@
 const liveConnections = require('../../db/connectProjects')
+const Joi = require('joi')
 
 module.exports = {
   name: 'export',
   actions: {
     async listCollections (ctx) {
-      const { project } = ctx.params
+      const { project } = ctx.params.project
       if (liveConnections[project]) {
         try {
           if (liveConnections[project].type === 'mysql') {
@@ -36,28 +37,42 @@ module.exports = {
         ctx.meta.$statusCode = 400
         return { error: 'Error: invalid project or could not connect to project database' }
       }
-    // },
-    // exportCollection (ctx) {
-    //   const { project, collections } = ctx.params
-    //   if (liveConnections[project]) {
-    //     try {
-    //       if (liveConnections[project].type === 'mysql') {
-    //         liveConnections[project].connection.query(`SELECT * FROM ${collections}`, (results) => {
-    //           return { results }
-    //         })
-    //       } else {
-    //         liveConnections[project].collections.find({}).toArray((results) => {
-    //           return results
-    //         })
-    //       }
-    //     } catch (err) {
-    //       ctx.meta.$statusCode = 400
-    //       return { error: err.toString() }
-    //     }
-    //   } else {
-    //     ctx.meta.$statusCode = 400
-    //     return { error: 'Error: invalid project or could not connect to project database' }
-    //   }
+    },
+    async exportCollection (ctx) {
+      const { collection, project } = ctx.params
+      if (liveConnections[project]) {
+        try {
+          if (liveConnections[project].type === 'mysql') {
+            const collections = await new Promise((resolve, reject) => {
+              liveConnections[project].connection.query('SELECT * FROM ??', [Joi.attempt(collection,
+                Joi.string())], (error, results) => {
+                if (error) {
+                  reject(error)
+                }
+                resolve(results)
+              })
+            })
+            return collections
+          } else {
+            const collections = await new Promise((resolve, reject) => {
+              liveConnections[project].connection.db.collection(Joi.attempt(collection, Joi.string()))
+                .find().toArray((error, collections) => {
+                  if (error) {
+                    reject(error)
+                  }
+                  resolve(collections)
+                })
+            })
+            return collections
+          }
+        } catch (err) {
+          ctx.meta.$statusCode = 400
+          return { error: err.toString() }
+        }
+      } else {
+        ctx.meta.$statusCode = 400
+        return { error: 'Error: invalid project or could not connect to project database' }
+      }
     }
   }
 }

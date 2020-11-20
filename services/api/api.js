@@ -14,7 +14,7 @@ module.exports = {
         'POST project': 'project.create',
         'PUT project/:name': 'project.update',
         'DELETE project/:name': 'project.remove',
-        // 'GET export/:project/:collection': 'export.exportCollection',
+        'GET export/:project/:collection': 'export.exportCollection',
         'GET export/:project': 'export.listCollections'
       }
     }],
