@@ -1,43 +1,61 @@
-const liveConnections = require('./connect')
+const liveConnections = require('../../db/connect')
 
 module.exports = {
   name: 'export',
   actions: {
-    showTables (ctx) {
+    listCollections (ctx) {
       const { project } = ctx.params
       if (liveConnections[project]) {
         try {
           if (liveConnections[project].type === 'mysql') {
-            liveConnections[project].connection.query('SHOW TABLES', (results) => {
-              return { results }
+            return new Promise((resolve, reject) => {
+              liveConnections[project].connection.query('SHOW TABLES', (error, results) => {
+                if (error) {
+                  reject(error)
+                }
+                resolve(results)
+              })
             })
           } else {
-            return liveConnections[project].listCollections()
+            return new Promise((resolve, reject) => {
+              liveConnections[project].connection.db.listCollections().toArray((error, collections) => {
+                if (error) {
+                  reject(error)
+                }
+                resolve(collections.map(i => i.name))
+              })
+            })
           }
         } catch (err) {
+          ctx.meta.$statusCode = 400
           return { error: err.toString() }
         }
       } else {
-        return (' Project not found')
+        ctx.meta.$statusCode = 400
+        return { error: 'Error: invalid project or could not connect to project database' }
       }
-    },
-    exportAsJSON (ctx) {
-      const { project, collections } = ctx.params
-      if (liveConnections[project]) {
-        try {
-          if (liveConnections[project].type === 'mysql') {
-            liveConnections[project].connection.query(`SELECT * FROM ${collections}`, (results) => {
-              return { results }
-            })
-          } else {
-            liveConnections[project].collections.find({}).toArray((results) => {
-              return results
-            })
-          }
-        } catch (err) {
-          return { error: err.toString() }
-        }
-      }
+    // },
+    // exportCollection (ctx) {
+    //   const { project, collections } = ctx.params
+    //   if (liveConnections[project]) {
+    //     try {
+    //       if (liveConnections[project].type === 'mysql') {
+    //         liveConnections[project].connection.query(`SELECT * FROM ${collections}`, (results) => {
+    //           return { results }
+    //         })
+    //       } else {
+    //         liveConnections[project].collections.find({}).toArray((results) => {
+    //           return results
+    //         })
+    //       }
+    //     } catch (err) {
+    //       ctx.meta.$statusCode = 400
+    //       return { error: err.toString() }
+    //     }
+    //   } else {
+    //     ctx.meta.$statusCode = 400
+    //     return { error: 'Error: invalid project or could not connect to project database' }
+    //   }
     }
   }
 }

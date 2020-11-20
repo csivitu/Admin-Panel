@@ -10,12 +10,18 @@ Project.find({}, { _id: false }).then(docs => {
       try {
         const connection = await connectSql(doc.dbURL)
         liveConnections[doc.name] = { connection, type: 'mysql' }
-      } catch {}
+        console.log({ name: doc.name, status: 'Status: connected' })
+      } catch (e) {
+        console.error({ name: doc.name, error: e.toString() })
+      }
     } else {
       try {
         const connection = await connectMongo(doc.dbURL)
         liveConnections[doc.name] = { connection, type: 'mongodb' }
-      } catch {}
+        console.log({ name: doc.name, status: 'Status: connected' })
+      } catch (e) {
+        console.error({ name: doc.name, error: e.toString() })
+      }
     }
   })
 })

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Admin-Panel",
   "scripts": {
-    "start": "moleculer-runner --env --hot services/project/project.js services/api/api.js # services/export/export.js",
-    "deploy:prod": "moleculer-runner --env services/project/project.js services/api/api.js # services/export/export.js",
+    "start": "moleculer-runner --env --hot services/project/project.js services/api/api.js services/export/export.js",
+    "deploy:prod": "moleculer-runner --env services/project/project.js services/api/api.js services/export/export.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

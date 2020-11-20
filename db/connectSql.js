@@ -6,7 +6,9 @@ function connectSql (dbURL) {
     const obj = new ConnectionString(dbURL)
     const connection = mysql.createConnection(obj)
     connection.connect((e) => {
-      reject(e)
+      if (e) {
+        reject(e)
+      }
       resolve(connection)
     })
   })
