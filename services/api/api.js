@@ -13,7 +13,9 @@ module.exports = {
         'GET project/:name': 'project.get',
         'POST project': 'project.create',
         'PUT project/:name': 'project.update',
-        'DELETE project/:name': 'project.remove'
+        'DELETE project/:name': 'project.remove',
+        'GET export/:project': 'export.showTables',
+        'GET export/:project/:collection': 'export.exportAsJSON'
       }
     }],
     port: process.env.PORT || '5001',
