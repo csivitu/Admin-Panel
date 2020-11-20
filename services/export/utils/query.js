@@ -1,5 +1,4 @@
-const liveConnections = require('../../db/connectProjects')
-const Joi = require('joi')
+const liveConnections = require('../../../db/connectProjects')
 
 const sqlExport = async (project) => {
   const collections = await new Promise((resolve, reject) => {
@@ -27,8 +26,7 @@ const nosqlExport = async (project) => {
 
 const sqlListCollection = async (project, collection) => {
   const collections = await new Promise((resolve, reject) => {
-    liveConnections[project].connection.query('SELECT * FROM ??', [Joi.attempt(collection,
-      Joi.string())], (error, results) => {
+    liveConnections[project].connection.query('SELECT * FROM ??', [collection], (error, results) => {
       if (error) {
         reject(error)
       }
@@ -40,7 +38,7 @@ const sqlListCollection = async (project, collection) => {
 
 const nosqlListCollection = async (project, collection) => {
   const collections = await new Promise((resolve, reject) => {
-    liveConnections[project].connection.db.collections(Joi.attempt(collection, Joi.string()))
+    liveConnections[project].connection.db.collection(collection)
       .find().toArray((error, collections) => {
         if (error) {
           reject(error)
