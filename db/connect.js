@@ -5,11 +5,17 @@ const connectMongo = require('./connectMongo')
 const liveConnections = {}
 
 Project.find({}, { _id: false }).then(docs => {
-  docs.forEach(doc => {
+  docs.forEach(async doc => {
     if (doc.dbURL.slice(0, 5) === 'mysql') {
-      liveConnections[doc.name] = { connection: connectSql(doc.dbURL), type: 'mysql' }
+      try {
+        const connection = await connectSql(doc.dbURL)
+        liveConnections[doc.name] = { connection, type: 'mysql' }
+      } catch {}
     } else {
-      liveConnections[doc.name] = { connection: connectMongo(doc.dbURL), type: 'mongodb' }
+      try {
+        const connection = await connectMongo(doc.dbURL)
+        liveConnections[doc.name] = { connection, type: 'mongodb' }
+      } catch {}
     }
   })
 })
