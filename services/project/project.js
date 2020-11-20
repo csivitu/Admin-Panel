@@ -4,13 +4,14 @@ const Joi = require('joi')
 module.exports = {
   name: 'project',
   actions: {
-    create (ctx) {
+    async create (ctx) {
       const { name, dbURL } = ctx.params
       try {
         const doc = Joi.attempt({
           name, dbURL
         }, joiProjectSchema)
-        return Project.create(doc)
+        const document = await Project.create(doc)
+        return document
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }
@@ -42,21 +43,23 @@ module.exports = {
         return { error: err.toString() }
       }
     },
-    update (ctx) {
+    async update (ctx) {
       const { name, dbURL } = ctx.params
       try {
         const doc = Joi.attempt({ name, dbURL }, joiProjectSchema)
-        return Project.updateOne({
+        const document = await Project.updateOne({
           name: Joi.attempt(name, Joi.string())
         }, doc)
+        return document
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }
       }
     },
-    delete (ctx) {
+    async delete (ctx) {
       try {
-        return Project.deleteOne({ name: Joi.attempt(ctx.params.name, Joi.string()) })
+        const document = await Project.deleteOne({ name: Joi.attempt(ctx.params.name, Joi.string()) })
+        return document
       } catch (err) {
         ctx.meta.$statusCode = 400
         return { error: err.toString() }

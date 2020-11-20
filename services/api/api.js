@@ -1,5 +1,5 @@
 require('../../db/init')
-require('../../db/connect')
+require('../../db/connectProjects')
 
 const { ALLOWED_ORIGINS } = process.env
 const ApiService = require('moleculer-web')

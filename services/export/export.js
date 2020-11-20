@@ -1,14 +1,14 @@
-const liveConnections = require('../../db/connect')
+const liveConnections = require('../../db/connectProjects')
 
 module.exports = {
   name: 'export',
   actions: {
-    listCollections (ctx) {
+    async listCollections (ctx) {
       const { project } = ctx.params
       if (liveConnections[project]) {
         try {
           if (liveConnections[project].type === 'mysql') {
-            return new Promise((resolve, reject) => {
+            const collections = await new Promise((resolve, reject) => {
               liveConnections[project].connection.query('SHOW TABLES', (error, results) => {
                 if (error) {
                   reject(error)
@@ -16,8 +16,9 @@ module.exports = {
                 resolve(results.map(i => i[Object.keys(i)[0]]))
               })
             })
+            return collections
           } else {
-            return new Promise((resolve, reject) => {
+            const collections = await new Promise((resolve, reject) => {
               liveConnections[project].connection.db.listCollections().toArray((error, collections) => {
                 if (error) {
                   reject(error)
@@ -25,6 +26,7 @@ module.exports = {
                 resolve(collections.map(i => i.name))
               })
             })
+            return collections
           }
         } catch (err) {
           ctx.meta.$statusCode = 400
