@@ -1,0 +1,33 @@
+{
+  "name": "adminpanel",
+  "version": "1.0.0",
+  "description": "Admin-Panel",
+  "scripts": {
+    "start": "moleculer-runner --env --hot services/project/project.js services/api/api.js",
+    "deploy:prod": "moleculer-runner --env services/project/project.js services/api/api.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "joi": "^17.3.0",
+    "joigoose": "^8.0.0",
+    "moleculer": "^0.14.11",
+    "moleculer-web": "^0.9.1",
+    "mongoose": "^5.10.15"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
+  "devDependencies": {
+    "eslint": "^7.13.0",
+    "eslint-config-standard": "^16.0.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "husky": "^4.3.0"
+  }
+}
