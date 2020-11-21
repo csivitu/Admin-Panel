@@ -1,15 +1,15 @@
-const mysql = require('mysql')
+const mysql = require('mysql');
 
-function connectSql (dbURL) {
+function connectSql(dbURL) {
   return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection(dbURL)
+    const connection = mysql.createConnection(dbURL);
     connection.connect((e) => {
       if (e) {
-        reject(e)
+        reject(e);
       }
-      resolve(connection)
-    })
-  })
+      resolve(connection);
+    });
+  });
 }
 
-module.exports = connectSql
+module.exports = connectSql;

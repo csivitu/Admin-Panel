@@ -1,16 +1,16 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-function connectMongo (dbURL) {
+function connectMongo(dbURL) {
   try {
     return mongoose
       .createConnection(dbURL, {
         useNewUrlParser: true,
         useCreateIndex: true,
-        useUnifiedTopology: true
-      })
+        useUnifiedTopology: true,
+      });
   } catch (e) {
-    return Promise.reject(e)
+    return Promise.reject(e);
   }
 }
 
-module.exports = connectMongo
+module.exports = connectMongo;

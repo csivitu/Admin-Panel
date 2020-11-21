@@ -1,26 +1,27 @@
-const { Project } = require('./schema')
-const connectSql = require('./connectSql')
-const connectMongo = require('./connectMongo')
+/* eslint-disable no-console */
+const { Project } = require('./schema');
+const connectSql = require('./connectSql');
+const connectMongo = require('./connectMongo');
 
-const liveConnections = {}
+const liveConnections = {};
 
-Project.find({}, { _id: false }).then(docs => {
-  docs.forEach(doc => {
-    connectDB(doc)
-  })
-})
-
-async function connectDB (doc) {
+async function connectDB(doc) {
   const { fun, type } = (doc.dbURL.slice(0, 5) === 'mysql')
     ? { fun: connectSql, type: 'mysql' }
-    : { fun: connectMongo, type: 'mongodb' }
+    : { fun: connectMongo, type: 'mongodb' };
   try {
-    const connection = await fun(doc.dbURL)
-    liveConnections[doc.name] = { connection, type }
-    console.log({ name: doc.name, status: 'Status: connected' })
+    const connection = await fun(doc.dbURL);
+    liveConnections[doc.name] = { connection, type };
+    console.log({ name: doc.name, status: 'Status: connected' });
   } catch (e) {
-    console.error({ name: doc.name, error: e.toString() })
+    console.error({ name: doc.name, error: e.toString() });
   }
 }
 
-module.exports = { liveConnections, connectDB }
+Project.find({}, { _id: false }).then((docs) => {
+  docs.forEach((doc) => {
+    connectDB(doc);
+  });
+});
+
+module.exports = { liveConnections, connectDB };
