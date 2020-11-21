@@ -1,7 +1,13 @@
-const { sqlExport, nosqlExport, sqlListCollection, nosqlListCollection } = require('./utils/query')
-const { liveConnections } = require('../../db/connectProjects')
+const { sqlExport, nosqlExport, sqlListCollection, nosqlListCollection } = require('./query')
+const { liveConnections } = require('../../../db/connectProjects')
 
-async function handle (project, collection, ctx, method) {
+async function handle (project, collection, ctx) {
+  let method = ''
+  if (collection !== '') {
+    method = (liveConnections[project].type === 'mysql') ? 'sqlListCollection' : 'nosqlListCollection'
+  } else {
+    method = (liveConnections[project].type === 'mysql') ? 'sqlExport' : 'nosqlExport'
+  }
   let tables = ''
 
   if (liveConnections[project]) {
@@ -24,7 +30,7 @@ async function handle (project, collection, ctx, method) {
 
       default:
         ctx.meta.$statusCode = 400
-        // return { error: err.toString() }
+        return { error: 'Error: invalid project or could not connect to project database' }
     }
   } else {
     ctx.meta.$statusCode = 400
