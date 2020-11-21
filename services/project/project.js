@@ -1,84 +1,88 @@
-const { Project, joiProjectSchema } = require('../../db/schema')
-const Joi = require('joi')
-const { connectDB, liveConnections } = require('../../db/connectProjects')
+const Joi = require('joi');
+const { Project, joiProjectSchema } = require('../../db/schema');
+const { connectDB, liveConnections } = require('../../db/connectProjects');
 
 module.exports = {
   name: 'project',
   actions: {
-    async create (ctx) {
-      const { name, dbURL } = ctx.params
+    async create(ctx) {
+      const { name, dbURL } = ctx.params;
       try {
         const doc = Joi.attempt({
-          name, dbURL
-        }, joiProjectSchema)
-        const document = await Project.create(doc)
-        connectDB(document)
-        return document
+          name, dbURL,
+        }, joiProjectSchema);
+        const document = await Project.create(doc);
+        connectDB(document);
+        return document;
       } catch (err) {
-        ctx.meta.$statusCode = 400
-        return { error: err.toString() }
+        ctx.meta.$statusCode = 400;
+        return { error: err.toString() };
       }
     },
-    async list (ctx) {
+    async list(ctx) {
       try {
-        const docs = await Project.find({}, { _id: false, name: true })
-        return docs
+        const docs = await Project.find({}, { _id: false, name: true });
+        return docs;
       } catch (err) {
-        ctx.meta.$statusCode = 400
-        return { error: err.toString() }
+        ctx.meta.$statusCode = 400;
+        return { error: err.toString() };
       }
     },
-    async get (ctx) {
+    async get(ctx) {
       try {
-        const doc = await Project.find({ name: Joi.attempt(ctx.params.name, Joi.string()) }, { _id: false })
+        const doc = await Project.find({ name: Joi.attempt(ctx.params.name, Joi.string()) },
+          { _id: false });
         if (doc.length !== 1) {
-          ctx.meta.$statusCode = 404
-          return { error: 'Error: project not found' }
+          ctx.meta.$statusCode = 404;
+          return { error: 'Error: project not found' };
         }
-        return doc[0]
+        return doc[0];
       } catch (err) {
-        ctx.meta.$statusCode = 400
-        return { error: err.toString() }
+        ctx.meta.$statusCode = 400;
+        return { error: err.toString() };
       }
     },
-    async update (ctx) {
-      const { name, dbURL } = ctx.params
+    async update(ctx) {
+      const { name, dbURL } = ctx.params;
       try {
-        const doc = Joi.attempt({ name, dbURL }, joiProjectSchema)
+        const doc = Joi.attempt({ name, dbURL }, joiProjectSchema);
         const document = await Project.updateOne({
-          name: Joi.attempt(name, Joi.string())
-        }, doc)
+          name: Joi.attempt(name, Joi.string()),
+        }, doc);
         if (liveConnections[document.name]) {
           try {
-            liveConnections[document.name].end()
+            liveConnections[document.name].end();
           } catch {
-            liveConnections[document.name].close()
+            liveConnections[document.name].close();
           }
-          delete liveConnections[document.name]
+          delete liveConnections[document.name];
         }
-        connectDB(document)
-        return document
+        connectDB(document);
+        return document;
       } catch (err) {
-        ctx.meta.$statusCode = 400
-        return { error: err.toString() }
+        ctx.meta.$statusCode = 400;
+        return { error: err.toString() };
       }
     },
-    async delete (ctx) {
+    async delete(ctx) {
       try {
-        const document = await Project.deleteOne({ name: Joi.attempt(ctx.params.name, Joi.string()) })
+        const document = await Project.deleteOne({
+          name: Joi.attempt(ctx.params.name,
+            Joi.string()),
+        });
         if (liveConnections[document.name]) {
           try {
-            liveConnections[document.name].end()
+            liveConnections[document.name].end();
           } catch {
-            liveConnections[document.name].close()
+            liveConnections[document.name].close();
           }
-          delete liveConnections[document.name]
+          delete liveConnections[document.name];
         }
-        return document
+        return document;
       } catch (err) {
-        ctx.meta.$statusCode = 400
-        return { error: err.toString() }
+        ctx.meta.$statusCode = 400;
+        return { error: err.toString() };
       }
-    }
-  }
-}
+    },
+  },
+};

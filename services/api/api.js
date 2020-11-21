@@ -1,8 +1,8 @@
-require('../../db/init')
-require('../../db/connectProjects')
+require('../../db/init');
+require('../../db/connectProjects');
 
-const { ALLOWED_ORIGINS } = process.env
-const ApiService = require('moleculer-web')
+const { ALLOWED_ORIGINS } = process.env;
+const ApiService = require('moleculer-web');
 
 module.exports = {
   mixins: [ApiService],
@@ -15,12 +15,12 @@ module.exports = {
         'PUT project/:name': 'project.update',
         'DELETE project/:name': 'project.remove',
         'GET export/:project/:collection': 'export.exportCollection',
-        'GET export/:project': 'export.listCollections'
-      }
+        'GET export/:project': 'export.listCollections',
+      },
     }],
     port: process.env.PORT || '5001',
     cors: {
-      origin: ALLOWED_ORIGINS ? ALLOWED_ORIGINS.split(', ') : ''
-    }
-  }
-}
+      origin: ALLOWED_ORIGINS ? ALLOWED_ORIGINS.split(', ') : '',
+    },
+  },
+};
