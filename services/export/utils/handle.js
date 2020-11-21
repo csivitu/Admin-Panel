@@ -1,32 +1,22 @@
 const { sqlExport, nosqlExport, sqlListCollection, nosqlListCollection } = require('./query')
 const { liveConnections } = require('../../../db/connectProjects')
 
-async function handle (project, collection, ctx) {
-  let method = ''
-  if (collection !== '') {
-    method = (liveConnections[project].type === 'mysql') ? 'sqlListCollection' : 'nosqlListCollection'
-  } else {
-    method = (liveConnections[project].type === 'mysql') ? 'sqlExport' : 'nosqlExport'
-  }
-  let tables = ''
+function handle (project, collection, ctx) {
+  const method = !collection ? (liveConnections[project].type === 'mysql') ? 'sqlListCollection' : 'nosqlListCollection' : (liveConnections[project].type === 'mysql') ? 'sqlExport' : 'nosqlExport'
 
   if (liveConnections[project]) {
     switch (method) {
       case 'sqlListCollection':
-        tables = await sqlListCollection(project)
-        return tables
+        return sqlListCollection(project)
 
       case 'nosqlListCollection':
-        tables = await nosqlListCollection(project)
-        return tables
+        return nosqlListCollection(project)
 
       case 'sqlExport':
-        tables = await sqlExport(project, collection)
-        return tables
+        return sqlExport(project, collection)
 
       case 'nosqlExport':
-        tables = await nosqlExport(project, collection)
-        return tables
+        return nosqlExport(project, collection)
 
       default:
         ctx.meta.$statusCode = 400
