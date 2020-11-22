@@ -1,6 +1,8 @@
-const mongoose = require('mongoose');
-const Joigoose = require('joigoose')(mongoose);
-const Joi = require('joi');
+import mongoose from 'mongoose';
+import JG from 'joigoose';
+import Joi from 'joi';
+
+const Joigoose = JG(mongoose);
 
 const joiProjectSchema = Joi.object({
   name: Joi.string().required().meta({ unique: true }),
@@ -13,7 +15,7 @@ const mongooseProjectSchema = new mongoose.Schema(
 
 const Project = mongoose.model('Project', mongooseProjectSchema);
 
-module.exports = {
+export {
   Project,
   joiProjectSchema,
 };

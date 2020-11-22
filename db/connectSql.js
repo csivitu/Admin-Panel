@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+import mysql from 'mysql';
 
 function connectSql(dbURL) {
   return new Promise((resolve, reject) => {

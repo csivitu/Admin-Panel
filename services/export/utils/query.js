@@ -1,4 +1,4 @@
-const { liveConnections } = require('../../../db/connectProjects');
+import { liveConnections } from '../../../db/connectProjects';
 
 function sqlListCollection(project) {
   return new Promise((resolve, reject) => {
@@ -45,6 +45,6 @@ function nosqlExport(project, collection) {
   });
 }
 
-module.exports = {
+export {
   sqlExport, nosqlExport, sqlListCollection, nosqlListCollection,
 };

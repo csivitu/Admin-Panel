@@ -1,10 +1,11 @@
+import ApiService from 'moleculer-web';
+
 require('../../db/init');
 require('../../db/connectProjects');
 
 const { ALLOWED_ORIGINS } = process.env;
-const ApiService = require('moleculer-web');
 
-module.exports = {
+export default {
   mixins: [ApiService],
   settings: {
     routes: [{

@@ -1,6 +1,6 @@
-const { handle } = require('./utils/handle');
+import handle from './utils/handle';
 
-module.exports = {
+export default {
   name: 'export',
   actions: {
     async listCollections(ctx) {

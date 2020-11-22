@@ -1,8 +1,9 @@
 /* eslint-disable no-nested-ternary */
+import { liveConnections } from '../../../db/connectProjects';
+
 const {
   sqlExport, nosqlExport, sqlListCollection, nosqlListCollection,
 } = require('./query');
-const { liveConnections } = require('../../../db/connectProjects');
 
 function handle(project, collection, ctx) {
   const method = !collection ? (liveConnections[project].type === 'mysql') ? 'sqlListCollection' : 'nosqlListCollection' : (liveConnections[project].type === 'mysql') ? 'sqlExport' : 'nosqlExport';
@@ -31,4 +32,4 @@ function handle(project, collection, ctx) {
   }
 }
 
-module.exports = { handle };
+export default handle;

@@ -1,8 +1,8 @@
-const Joi = require('joi');
-const { Project, joiProjectSchema } = require('../../db/schema');
-const { connectDB, liveConnections } = require('../../db/connectProjects');
+import Joi from 'joi';
+import { Project, joiProjectSchema } from '../../db/schema';
+import { connectDB, liveConnections } from '../../db/connectProjects';
 
-module.exports = {
+export default {
   name: 'project',
   actions: {
     async create(ctx) {

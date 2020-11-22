@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-const { Project } = require('./schema');
-const connectSql = require('./connectSql');
-const connectMongo = require('./connectMongo');
+import { Project } from './schema';
+import connectSql from './connectSql';
+import connectMongo from './connectMongo';
 
 const liveConnections = {};
 
@@ -24,4 +24,4 @@ Project.find({}, { _id: false }).then((docs) => {
   });
 });
 
-module.exports = { liveConnections, connectDB };
+export { liveConnections, connectDB };
