@@ -2,13 +2,15 @@
   "name": "adminpanel",
   "version": "1.0.0",
   "description": "Admin-Panel",
+  "type": "module",
+  "author": "",
   "scripts": {
     "start": "moleculer-runner --env --hot services/project/project.js services/api/api.js services/export/export.js",
     "deploy:prod": "moleculer-runner --env services/project/project.js services/api/api.js services/export/export.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "dotenv": "^8.2.0",
     "joi": "^17.3.0",
@@ -26,10 +28,7 @@
   "devDependencies": {
     "eslint": "^7.14.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-standard": "^16.0.1",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
     "husky": "^4.3.0"
   }
 }
