@@ -1,15 +1,53 @@
-import handle from './utils/handle';
+import broker from '../../misc/broker.js';
+import {
+  sqlExport, nosqlExport, sqlListCollection, nosqlListCollection,
+} from './utils/query.js';
+import { liveConnections } from '../../db/connectProjects.js';
 
-export default {
+broker.createService({
   name: 'export',
   actions: {
     async listCollections(ctx) {
       const { project } = ctx.params;
-      handle(project, ctx);
+      if (liveConnections[project]) {
+        try {
+          if (liveConnections[project].type === 'mysql') {
+            const tables = await sqlListCollection(liveConnections[project]);
+            return tables;
+          }
+          const tables = await nosqlListCollection(liveConnections[project]);
+          return tables;
+        } catch (err) {
+          ctx.meta.$statusCode = 400;
+          return { error: err.toString() };
+        }
+      } else {
+        ctx.meta.$statusCode = 400;
+        return { error: 'Error: invalid project or could not connect to project database' };
+      }
     },
     async exportCollection(ctx) {
       const { collection, project } = ctx.params;
-      handle(project, collection, ctx);
+      if (liveConnections[project]) {
+        try {
+          if (liveConnections[project].type === 'mysql') {
+            const table = await sqlExport(collection, liveConnections[project]);
+            return table;
+          }
+          const table = await nosqlExport(collection, liveConnections[project]);
+          if (table.length === 0) {
+            ctx.meta.$statusCode = 404;
+            return { error: 'Error: collection not found' };
+          }
+          return table;
+        } catch (err) {
+          ctx.meta.$statusCode = 400;
+          return { error: err.toString() };
+        }
+      } else {
+        ctx.meta.$statusCode = 400;
+        return { error: 'Error: invalid project or could not connect to project database' };
+      }
     },
   },
-};
+});

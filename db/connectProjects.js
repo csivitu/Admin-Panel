@@ -1,7 +1,6 @@
-/* eslint-disable no-console */
-import { Project } from './schema';
-import connectSql from './connectSql';
-import connectMongo from './connectMongo';
+import { Project } from './schema.js';
+import connectSql from './connectSql.js';
+import connectMongo from './connectMongo.js';
 
 const liveConnections = {};
 

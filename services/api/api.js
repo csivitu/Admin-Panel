@@ -1,11 +1,11 @@
 import ApiService from 'moleculer-web';
-
-require('../../db/init');
-require('../../db/connectProjects');
+import broker from '../../misc/broker.js';
+import '../../db/init.js';
+import '../../db/connectProjects.js';
 
 const { ALLOWED_ORIGINS } = process.env;
 
-export default {
+broker.createService({
   mixins: [ApiService],
   settings: {
     routes: [{
@@ -24,4 +24,4 @@ export default {
       origin: ALLOWED_ORIGINS ? ALLOWED_ORIGINS.split(', ') : '',
     },
   },
-};
+});

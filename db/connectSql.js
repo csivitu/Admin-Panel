@@ -12,4 +12,4 @@ function connectSql(dbURL) {
   });
 }
 
-module.exports = connectSql;
+export default connectSql;

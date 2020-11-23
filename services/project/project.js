@@ -1,8 +1,9 @@
 import Joi from 'joi';
-import { Project, joiProjectSchema } from '../../db/schema';
-import { connectDB, liveConnections } from '../../db/connectProjects';
+import broker from '../../misc/broker.js';
+import { Project, joiProjectSchema } from '../../db/schema.js';
+import { connectDB, liveConnections } from '../../db/connectProjects.js';
 
-export default {
+broker.createService({
   name: 'project',
   actions: {
     async create(ctx) {
@@ -30,8 +31,12 @@ export default {
     },
     async get(ctx) {
       try {
-        const doc = await Project.find({ name: Joi.attempt(ctx.params.name, Joi.string()) },
-          { _id: false });
+        const doc = await Project.find({
+          name: Joi.attempt(ctx.params.name, Joi.string()),
+        },
+        {
+          _id: false,
+        });
         if (doc.length !== 1) {
           ctx.meta.$statusCode = 404;
           return { error: 'Error: project not found' };
@@ -67,8 +72,7 @@ export default {
     async delete(ctx) {
       try {
         const document = await Project.deleteOne({
-          name: Joi.attempt(ctx.params.name,
-            Joi.string()),
+          name: Joi.attempt(ctx.params.name, Joi.string()),
         });
         if (liveConnections[document.name]) {
           try {
@@ -85,4 +89,4 @@ export default {
       }
     },
   },
-};
+});

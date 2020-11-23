@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import JG from 'joigoose';
+import joigoose from 'joigoose';
 import Joi from 'joi';
 
-const Joigoose = JG(mongoose);
+const Joigoose = joigoose(mongoose);
 
 const joiProjectSchema = Joi.object({
   name: Joi.string().required().meta({ unique: true }),

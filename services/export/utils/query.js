@@ -1,8 +1,6 @@
-import { liveConnections } from '../../../db/connectProjects';
-
-function sqlListCollection(project) {
+function sqlListCollection(instance) {
   return new Promise((resolve, reject) => {
-    liveConnections[project].connection.query('SHOW TABLES', (error, results) => {
+    instance.connection.query('SHOW TABLES', (error, results) => {
       if (error) {
         reject(error);
       }
@@ -11,9 +9,9 @@ function sqlListCollection(project) {
   });
 }
 
-function nosqlListCollection(project) {
+function nosqlListCollection(instance) {
   return new Promise((resolve, reject) => {
-    liveConnections[project].connection.db.listCollections().toArray((error, collections) => {
+    instance.connection.db.listCollections().toArray((error, collections) => {
       if (error) {
         reject(error);
       }
@@ -22,9 +20,9 @@ function nosqlListCollection(project) {
   });
 }
 
-function sqlExport(project, collection) {
+function sqlExport(collection, instance) {
   return new Promise((resolve, reject) => {
-    liveConnections[project].connection.query('SELECT * FROM ??', [collection], (error, results) => {
+    instance.connection.query('SELECT * FROM ??', [collection], (error, results) => {
       if (error) {
         reject(error);
       }
@@ -33,9 +31,9 @@ function sqlExport(project, collection) {
   });
 }
 
-function nosqlExport(project, collection) {
+function nosqlExport(collection, instance) {
   return new Promise((resolve, reject) => {
-    liveConnections[project].connection.db.collection(collection)
+    instance.connection.db.collection(collection)
       .find().toArray((error, collections) => {
         if (error) {
           reject(error);
