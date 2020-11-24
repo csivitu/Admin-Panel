@@ -1,6 +1,6 @@
 import mysql from 'mysql';
 
-function connectSql(dbURL) {
+function connectSql(dbURL: any) {
   return new Promise((resolve, reject) => {
     const connection = mysql.createConnection(dbURL);
     connection.connect((e) => {

@@ -1,12 +1,11 @@
 import ApiService from 'moleculer-web';
-import broker from '../../misc/broker.js';
-import '../../db/init.js';
-import '../../db/connectProjects.js';
+import broker from '../../misc/broker';
 
 const { ALLOWED_ORIGINS } = process.env;
 
 broker.createService({
   mixins: [ApiService],
+  name: 'api',
   settings: {
     routes: [{
       aliases: {

@@ -1,10 +1,10 @@
-import { Project } from './schema.js';
-import connectSql from './connectSql.js';
-import connectMongo from './connectMongo.js';
+import { Project } from './schema';
+import connectSql from './connectSql';
+import connectMongo from './connectMongo';
 
-const liveConnections = {};
+const liveConnections: any = {};
 
-async function connectDB(doc) {
+async function connectDB(doc: any) {
   const { fun, type } = (doc.dbURL.slice(0, 5) === 'mysql')
     ? { fun: connectSql, type: 'mysql' }
     : { fun: connectMongo, type: 'mongodb' };
@@ -17,7 +17,7 @@ async function connectDB(doc) {
   }
 }
 
-Project.find({}, { _id: false }).then((docs) => {
+Project.find({}).then((docs) => {
   docs.forEach((doc) => {
     connectDB(doc);
   });

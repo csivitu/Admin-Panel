@@ -1,28 +1,28 @@
-function sqlListCollection(instance) {
+function sqlListCollection(instance: any) {
   return new Promise((resolve, reject) => {
-    instance.connection.query('SHOW TABLES', (error, results) => {
+    instance.connection.query('SHOW TABLES', (error: any, results: any) => {
       if (error) {
         reject(error);
       }
-      resolve(results.map((i) => i[Object.keys(i)[0]]));
+      resolve(results.map((i: any) => i[Object.keys(i)[0]]));
     });
   });
 }
 
-function nosqlListCollection(instance) {
+function nosqlListCollection(instance: any) {
   return new Promise((resolve, reject) => {
-    instance.connection.db.listCollections().toArray((error, collections) => {
+    instance.connection.db.listCollections().toArray((error: any, collections: any) => {
       if (error) {
         reject(error);
       }
-      resolve(collections.map((i) => i.name));
+      resolve(collections.map((i: any) => i.name));
     });
   });
 }
 
-function sqlExport(collection, instance) {
+function sqlExport(collection: any, instance: any) {
   return new Promise((resolve, reject) => {
-    instance.connection.query('SELECT * FROM ??', [collection], (error, results) => {
+    instance.connection.query('SELECT * FROM ??', [collection], (error: any, results: any) => {
       if (error) {
         reject(error);
       }
@@ -31,10 +31,10 @@ function sqlExport(collection, instance) {
   });
 }
 
-function nosqlExport(collection, instance) {
+function nosqlExport(collection: any, instance: any) {
   return new Promise((resolve, reject) => {
     instance.connection.db.collection(collection)
-      .find().toArray((error, collections) => {
+      .find().toArray((error: any, collections: any) => {
         if (error) {
           reject(error);
         }

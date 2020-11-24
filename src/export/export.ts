@@ -1,8 +1,8 @@
-import broker from '../../misc/broker.js';
+import broker from '../../misc/broker';
 import {
   sqlExport, nosqlExport, sqlListCollection, nosqlListCollection,
-} from './utils/query.js';
-import { liveConnections } from '../../db/connectProjects.js';
+} from './utils/query';
+import { liveConnections } from '../../db/connectProjects';
 
 broker.createService({
   name: 'export',
@@ -34,7 +34,7 @@ broker.createService({
             const table = await sqlExport(collection, liveConnections[project]);
             return table;
           }
-          const table = await nosqlExport(collection, liveConnections[project]);
+          const table: any = await nosqlExport(collection, liveConnections[project]);
           if (table.length === 0) {
             ctx.meta.$statusCode = 404;
             return { error: 'Error: collection not found' };

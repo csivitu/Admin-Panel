@@ -1,7 +1,7 @@
 import Joi from 'joi';
-import broker from '../../misc/broker.js';
-import { Project, joiProjectSchema } from '../../db/schema.js';
-import { connectDB, liveConnections } from '../../db/connectProjects.js';
+import broker from '../../misc/broker';
+import { Project, joiProjectSchema } from '../../db/schema';
+import { connectDB, liveConnections } from '../../db/connectProjects';
 
 broker.createService({
   name: 'project',
@@ -33,9 +33,6 @@ broker.createService({
       try {
         const doc = await Project.find({
           name: Joi.attempt(ctx.params.name, Joi.string()),
-        },
-        {
-          _id: false,
         });
         if (doc.length !== 1) {
           ctx.meta.$statusCode = 404;
@@ -54,13 +51,13 @@ broker.createService({
         const document = await Project.updateOne({
           name: Joi.attempt(name, Joi.string()),
         }, doc);
-        if (liveConnections[document.name]) {
+        if (liveConnections[name]) {
           try {
-            liveConnections[document.name].end();
+            liveConnections[name].end();
           } catch {
-            liveConnections[document.name].close();
+            liveConnections[name].close();
           }
-          delete liveConnections[document.name];
+          delete liveConnections[name];
         }
         connectDB(document);
         return document;
@@ -69,18 +66,18 @@ broker.createService({
         return { error: err.toString() };
       }
     },
-    async delete(ctx) {
+    async remove(ctx) {
       try {
         const document = await Project.deleteOne({
           name: Joi.attempt(ctx.params.name, Joi.string()),
         });
-        if (liveConnections[document.name]) {
+        if (liveConnections[ctx.params.name]) {
           try {
-            liveConnections[document.name].end();
+            liveConnections[ctx.params.name].connection.end();
           } catch {
-            liveConnections[document.name].close();
+            liveConnections[ctx.params.name].connection.close();
           }
-          delete liveConnections[document.name];
+          delete liveConnections[ctx.params.name];
         }
         return document;
       } catch (err) {

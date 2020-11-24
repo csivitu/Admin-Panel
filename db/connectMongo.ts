@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-function connectMongo(dbURL) {
+function connectMongo(dbURL: any) {
   try {
     return mongoose
       .createConnection(dbURL, {
