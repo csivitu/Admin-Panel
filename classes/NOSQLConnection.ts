@@ -12,28 +12,28 @@ export default class NOSQLDBConnection extends DBConnection {
       this.dbURL = dbURL;
     }
 
-    setupConnection(): Promise<object> {
-      return new Promise((resolve, reject) => {
-        mongoose
+    async setupConnection(): Promise<object> {
+      try {
+        const connection = await mongoose
           .createConnection(this.dbURL, {
             useNewUrlParser: true,
             useCreateIndex: true,
             useUnifiedTopology: true,
-          }).then((connection) => {
-            this.connection = connection;
-            resolve(connection);
-          }).catch((e) => {
-            reject(e);
           });
-      });
+        this.connection = connection;
+        return connection;
+      } catch (e) {
+        return Promise.reject(e);
+      }
     }
 
-    closeConnection(): Promise<void> {
-      return new Promise((resolve, reject) => {
-        this.connection?.close().catch((e) => {
-          reject(e);
-        }).then((value) => resolve(value));
-      });
+    async closeConnection(): Promise<void> {
+      try {
+        const ret = await this.connection?.close();
+        return ret;
+      } catch (e) {
+        return Promise.reject(e);
+      }
     }
 
     findAll(collection: string): Promise<object> {

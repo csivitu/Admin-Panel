@@ -37,18 +37,15 @@ export default class NOSQLDBConnection extends DBConnection {
     }
 
     findAll(collection: string): Promise<object> {
-      return new Promise((resolve, reject) => {
-        query('SELECT * FROM ??', [collection], this.connection).then((doc) => {
-          resolve(doc);
-        }).catch((e) => reject(e));
-      });
+      return query('SELECT * FROM ??', [collection], this.connection);
     }
 
-    listCollections(): Promise<object> {
-      return new Promise((resolve, reject) => {
-        query('SHOW TABLES', [], this.connection).then((doc) => {
-          resolve(doc.map((i: any) => i[Object.keys(i)[0]]));
-        }).catch((e) => reject(e));
-      });
+    async listCollections(): Promise<object> {
+      try {
+        const doc = await query('SHOW TABLES', [], this.connection);
+        return doc.map((i: any) => i[Object.keys(i)[0]]);
+      } catch (e) {
+        return Promise.reject(e);
+      }
     }
 }
