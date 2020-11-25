@@ -4,7 +4,7 @@ export interface CollectionSchema {
     name: string
 }
 
-export interface Doc extends Document {
+export interface DocSchema extends Document {
     dbURL: string,
     name: string
 }

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import joigoose from 'joigoose';
 import Joi from 'joi';
-import { Doc } from '../interfaces/interfaces';
+import { DocSchema } from '../interfaces/interfaces';
 
 const Joigoose = joigoose(mongoose);
 
@@ -14,7 +14,7 @@ const mongooseProjectSchema = new mongoose.Schema(
   Joigoose.convert(joiProjectSchema),
 );
 
-const Project = mongoose.model<Doc>('Project', mongooseProjectSchema);
+const Project = mongoose.model<DocSchema>('Project', mongooseProjectSchema);
 
 export {
   Project,
