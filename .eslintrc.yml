@@ -11,6 +11,9 @@ plugins:
   - '@typescript-eslint'
 settings:
   import/resolver: typescript
-rules: {
-  import/extensions: 0,
-}
+rules:
+  import/extensions: 0
+  no-unused-vars:
+    - error
+    - argsIgnorePattern: ^_
+  no-console: 0
