@@ -7,11 +7,8 @@ broker.createService({
   name: 'project',
   actions: {
     async create(ctx) {
-      const { name, dbURL } = ctx.params;
       try {
-        const doc = Joi.attempt({
-          name, dbURL,
-        }, joiProjectSchema);
+        const doc = Joi.attempt(ctx.params, joiProjectSchema);
         const document = await Project.create(doc);
         connectDB(document);
         return document;
@@ -45,19 +42,15 @@ broker.createService({
       }
     },
     async update(ctx) {
-      const { name, dbURL } = ctx.params;
       try {
-        const doc = Joi.attempt({ name, dbURL }, joiProjectSchema);
+        const doc = Joi.attempt(ctx.params, joiProjectSchema);
         const document = await Project.updateOne({
-          name: Joi.attempt(name, Joi.string()),
+          name: doc.name,
         }, doc);
-        if (liveConnections[name]) {
-          try {
-            liveConnections[name].end();
-          } catch {
-            liveConnections[name].close();
-          }
-          delete liveConnections[name];
+        const connection = liveConnections[doc.name];
+        if (connection) {
+          connection.closeConnection();
+          delete liveConnections[doc.name];
         }
         connectDB(document);
         return document;
@@ -68,16 +61,14 @@ broker.createService({
     },
     async remove(ctx) {
       try {
+        const { name } = ctx.params;
         const document = await Project.deleteOne({
-          name: Joi.attempt(ctx.params.name, Joi.string()),
+          name: Joi.attempt(name, Joi.string()),
         });
-        if (liveConnections[ctx.params.name]) {
-          try {
-            liveConnections[ctx.params.name].connection.end();
-          } catch {
-            liveConnections[ctx.params.name].connection.close();
-          }
-          delete liveConnections[ctx.params.name];
+        const connection = liveConnections[name];
+        if (connection) {
+          connection.closeConnection();
+          delete liveConnections[name];
         }
         return document;
       } catch (err) {

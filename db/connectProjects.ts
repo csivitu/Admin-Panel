@@ -1,16 +1,22 @@
 import { Project } from './schema';
-import connectSql from './connectSql';
-import connectMongo from './connectMongo';
+import { Doc } from '../interfaces/interfaces';
+import NOSQLConnection from '../classes/NOSQLConnection';
+import SQLConnection from '../classes/SQLConnection';
+import DBConnection from '../classes/DBConnection';
 
-const liveConnections: any = {};
+export const liveConnections: {
+    [key: string]: DBConnection,
+   } = {};
 
-async function connectDB(doc: any) {
-  const { fun, type } = (doc.dbURL.slice(0, 5) === 'mysql')
-    ? { fun: connectSql, type: 'mysql' }
-    : { fun: connectMongo, type: 'mongodb' };
+export async function connectDB(doc: Doc) {
+  const { dbURL, name } = doc;
+  const Fun = (dbURL.slice(0, 5) === 'mysql')
+    ? SQLConnection
+    : NOSQLConnection;
+  const connection = new Fun(dbURL);
   try {
-    const connection = await fun(doc.dbURL);
-    liveConnections[doc.name] = { connection, type };
+    await connection.setupConnection();
+    liveConnections[name] = connection;
     console.log({ name: doc.name, status: 'Status: connected' });
   } catch (e) {
     console.error({ name: doc.name, error: e.toString() });
@@ -22,5 +28,3 @@ Project.find({}).then((docs) => {
     connectDB(doc);
   });
 });
-
-export { liveConnections, connectDB };

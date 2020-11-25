@@ -1,9 +1,6 @@
 import mongoose from 'mongoose';
 import DBConnection from './DBConnection';
-
-interface collectionSchema {
-    name: string
-}
+import { CollectionSchema } from '../interfaces/interfaces';
 
 export default class NOSQLDBConnection extends DBConnection {
     dbURL: string
@@ -76,7 +73,7 @@ export default class NOSQLDBConnection extends DBConnection {
     listCollections(): Promise<object> {
       return new Promise((resolve, reject) => {
         this.connection?.db.listCollections().toArray((error: object,
-          collections: Array<collectionSchema>) => {
+          collections: Array<CollectionSchema>) => {
           if (error) {
             reject(error);
           }
