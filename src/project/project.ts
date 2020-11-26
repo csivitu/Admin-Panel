@@ -28,14 +28,14 @@ broker.createService({
     },
     async get(ctx) {
       try {
-        const doc = await Project.find({
+        const doc = await Project.findOne({
           name: Joi.attempt(ctx.params.name, Joi.string()),
         });
-        if (doc.length !== 1) {
+        if (!doc) {
           ctx.meta.$statusCode = 404;
           return { error: 'Error: project not found' };
         }
-        return doc[0];
+        return doc;
       } catch (err) {
         ctx.meta.$statusCode = 400;
         return { error: err.toString() };
