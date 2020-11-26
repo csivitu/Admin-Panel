@@ -6,7 +6,7 @@
     "start": "nodemon --exec 'ts-node' index.ts",
     "deploy:prod": "ts-node index.ts",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint --ext .ts . --fix"
+    "lint:fix": "eslint . --ext .ts --fix"
   },
   "license": "MIT",
   "dependencies": {

@@ -13,7 +13,7 @@ async function methodWrapper(ctx: ContextSchema, method: string) {
       const collections = await liveConnections[project].listCollections();
       return collections;
     }
-    const data = await liveConnections[project].findAll(collection);
+    const data = await liveConnections[project].exportCollection(collection);
     return data;
   } catch (e) {
     ctx.meta.$statusCode = 400;

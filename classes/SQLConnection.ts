@@ -36,7 +36,7 @@ export default class NOSQLDBConnection extends DBConnection {
       });
     }
 
-    findAll(collection: string): Promise<object> {
+    exportCollection(collection: string): Promise<object> {
       return query('SELECT * FROM ??', [collection], this.connection);
     }
 
