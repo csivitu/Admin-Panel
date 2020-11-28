@@ -9,22 +9,22 @@ export const liveConnections: {
    } = {};
 
 export async function connectDB(doc: DocSchema) {
-  const { dbURL, name } = doc;
-  const Fun = (dbURL.slice(0, 5) === 'mysql')
-    ? SQLConnection
-    : NOSQLConnection;
-  const connection = new Fun(dbURL);
-  try {
-    await connection.setupConnection();
-    liveConnections[name] = connection;
-    console.log({ name: doc.name, status: 'Status: connected' });
-  } catch (e) {
-    console.error({ name: doc.name, error: e.toString() });
-  }
+    const { dbURL, name } = doc;
+    const Fun = (dbURL.slice(0, 5) === 'mysql')
+        ? SQLConnection
+        : NOSQLConnection;
+    const connection = new Fun(dbURL);
+    try {
+        await connection.setupConnection();
+        liveConnections[name] = connection;
+        console.log({ name: doc.name, status: 'Status: connected' });
+    } catch (e) {
+        console.error({ name: doc.name, error: e.toString() });
+    }
 }
 
 Project.find({}).then((docs) => {
-  docs.forEach((doc) => {
-    connectDB(doc);
-  });
+    docs.forEach((doc) => {
+        connectDB(doc);
+    });
 });

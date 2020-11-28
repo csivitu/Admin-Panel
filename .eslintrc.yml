@@ -1,5 +1,4 @@
 env:
-  browser: false
   es2021: true
 extends:
   - airbnb-base
@@ -12,6 +11,9 @@ plugins:
 settings:
   import/resolver: typescript
 rules:
+  indent:
+  - "error"
+  - 4
   import/extensions: 0
   no-unused-vars:
     - error
