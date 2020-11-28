@@ -21,14 +21,18 @@ export default class NOSQLDBConnection extends DBConnection {
         return this.connection?.end();
     }
 
-    exportCollection(collection: string): Promise<object> {
-        return this.connection?.query('SELECT * FROM ??', [collection]);
+    async exportCollection(collection: string): Promise<object> {
+        const data = await this.connection?.query('SELECT * FROM ??', [collection]);
+        return data[0];
     }
 
     async listCollections(): Promise<object> {
         try {
             const doc = await this.connection?.query('SHOW TABLES', []);
-            return doc.map((i: any) => i[Object.keys(i)[0]]);
+            console.log(JSON.parse(JSON.stringify(doc[0])));
+            return JSON.parse(JSON.stringify(doc[0])).map(
+                (i: {[key: string]: string}) => i[Object.keys(i)[0]],
+            );
         } catch (e) {
             return Promise.reject(e);
         }
