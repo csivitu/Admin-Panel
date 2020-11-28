@@ -45,13 +45,14 @@ export default class NOSQLDBConnection extends DBConnection {
 
     listCollections(): Promise<object> {
         return new Promise((resolve, reject) => {
-            this.connection?.db.listCollections().toArray((error: object,
-                collections: Array<CollectionSchema>) => {
-                if (error) {
-                    reject(error);
-                }
-                resolve(collections.map((i) => i.name));
-            });
+            this.connection?.db.listCollections().toArray(
+                (error: object, collections: Array<CollectionSchema>) => {
+                    if (error) {
+                        reject(error);
+                    }
+                    resolve(collections.map((i) => i.name));
+                },
+            );
         });
     }
 }
