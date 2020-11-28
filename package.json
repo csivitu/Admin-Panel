@@ -22,7 +22,7 @@
     "moleculer": "^0.14.11",
     "moleculer-web": "^0.9.1",
     "mongoose": "^5.10.15",
-    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
     "typescript": "^4.1.2"
   },
   "husky": {
