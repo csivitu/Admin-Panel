@@ -12,23 +12,25 @@ export default class NOSQLDBConnection extends DBConnection {
     }
 
     async setupConnection(): Promise<object> {
-        try {
-            this.connection = await mysql.createConnection({ host: this.dbURL });
-            return this.connection;
-        } catch (err) {
-            return Promise.reject(err);
-        }
+        const connection = await mysql.createConnection(this.dbURL);
+        this.connection = connection;
+        return connection;
     }
 
-    closeConnection(): Promise<void> | undefined {
+    closeConnection(): Promise<void> {
         return this.connection?.end();
     }
 
-    exportCollection(collection: string): Promise<object> | undefined {
-        return this.connection?.execute('SELECT * FROM ??', [collection]);
+    exportCollection(collection: string): Promise<object> {
+        return this.connection?.query('SELECT * FROM ??', [collection]);
     }
 
-    listCollections(): Promise<object> | undefined {
-        return this.connection?.execute('SHOW TABLES', []);
+    async listCollections(): Promise<object> {
+        try {
+            const doc = await this.connection?.query('SHOW TABLES', []);
+            return doc.map((i: any) => i[Object.keys(i)[0]]);
+        } catch (e) {
+            return Promise.reject(e);
+        }
     }
 }

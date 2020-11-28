@@ -1,9 +1,9 @@
 export default abstract class DBConnection {
     abstract setupConnection(): Promise<object>;
 
-    abstract closeConnection(): Promise<void> | undefined;
+    abstract closeConnection(): Promise<void>;
 
-    abstract exportCollection(_collection: string): Promise<object> | undefined;
+    abstract exportCollection(_collection: string): Promise<object>;
 
-    abstract listCollections(): Promise<object> | undefined;
+    abstract listCollections(): Promise<object>;
 }
