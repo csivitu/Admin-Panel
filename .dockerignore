@@ -72,3 +72,6 @@ sample.env
 .gitignore
 .eslintignore
 .eslintrc.js
+
+# typescript
+dist/

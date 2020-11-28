@@ -4,6 +4,7 @@ WORKDIR /root/app
 
 COPY . .
 
-RUN npm install --only=prod
+RUN npm install --only=prod && \
+    npm run build
 
 CMD ["npm", "run", "deploy:prod"]
