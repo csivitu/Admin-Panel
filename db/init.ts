@@ -1,7 +1,15 @@
 import mongoose from 'mongoose';
 
+if (!process.env.DB_URL) {
+    console.error({
+        Message: 'DB connection failed',
+        error: 'Error: DB_URL is not defined, did you create a .env file? Check sample.env for reference',
+    });
+    process.exit(1);
+}
+
 mongoose
-    .connect(process.env.DB_URL || 'mongodb+srv://user:pass@cluster0.random.mongodb.net/myapp', {
+    .connect(process.env.DB_URL, {
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true,
