@@ -27,13 +27,8 @@ export default class NOSQLDBConnection extends DBConnection {
         }
     }
 
-    async closeConnection(): Promise<void> {
-        try {
-            const ret = await this.connection?.close();
-            return ret;
-        } catch (e) {
-            return Promise.reject(e);
-        }
+    closeConnection(): Promise<void> | undefined {
+        return this.connection?.close();
     }
 
     exportCollection(collection: string): Promise<object> {
