@@ -1,13 +1,13 @@
-import mysql from 'mysql';
+// import mysql from 'mysql2/promise';
 
-export default function query(queryString: string, placeholders: Array<string>,
-    instance?: mysql.Connection): Promise<Array<object>> {
-    return new Promise((resolve, reject) => {
-        instance?.query(queryString, placeholders, (error, results) => {
-            if (error) {
-                reject(error);
-            }
-            resolve(results);
-        });
-    });
-}
+// export default function query(queryString: string, placeholders: Array<string>,
+//     instance?: mysql.Connection): Promise<Array<object>> {
+//     return new Promise((resolve, reject) => {
+//         instance?.query(queryString, placeholders, (error, results) => {
+//             if (error) {
+//                 reject(error);
+//             }
+//             resolve(results);
+//         });
+//     });
+// }
