@@ -29,7 +29,6 @@ export default class NOSQLDBConnection extends DBConnection {
     async listCollections(): Promise<object> {
         try {
             const doc = await this.connection?.query('SHOW TABLES', []);
-            console.log(JSON.parse(JSON.stringify(doc[0])));
             return JSON.parse(JSON.stringify(doc[0])).map(
                 (i: {[key: string]: string}) => i[Object.keys(i)[0]],
             );
