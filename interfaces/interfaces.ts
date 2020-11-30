@@ -18,6 +18,7 @@ interface paramsSchema {
     collection: string,
     key: string | number,
     tuple: NewDocumentSchema,
+    keyTuple: NewDocumentSchema,
 }
 interface metaSchema {
     $statusCode: number
