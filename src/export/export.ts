@@ -4,7 +4,7 @@ import { ContextSchema } from '../../interfaces/interfaces';
 
 async function methodWrapper(ctx: ContextSchema, method: string) {
     const {
-        project, collection, key, tuple,
+        project, collection, key, tuple, keyTuple,
     } = ctx.params;
     if (!liveConnections[project]) {
         ctx.meta.$statusCode = 400;
@@ -25,6 +25,15 @@ async function methodWrapper(ctx: ContextSchema, method: string) {
         }
         if (method === 'addDocument') {
             const collections = await liveConnections[project].addDocument(collection, tuple);
+            return collections;
+        }
+
+        if (method === 'updateDocument') {
+            const collections = await liveConnections[project].updateDocument(
+                collection,
+                keyTuple,
+                tuple,
+            );
             return collections;
         }
         const data = await liveConnections[project].exportCollection(collection);
@@ -52,6 +61,9 @@ broker.createService({
         },
         addDocument(ctx) {
             return methodWrapper(ctx, 'addDocument');
+        },
+        updateDocument(ctx) {
+            return methodWrapper(ctx, 'updateDocument');
         },
     },
 });
