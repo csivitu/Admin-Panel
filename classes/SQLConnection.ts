@@ -1,4 +1,5 @@
 import mysql from 'mysql2/promise';
+import { NewDocumentSchema } from '../interfaces/interfaces';
 import DBConnection from './DBConnection';
 
 export default class NOSQLDBConnection extends DBConnection {
@@ -49,6 +50,15 @@ export default class NOSQLDBConnection extends DBConnection {
     async deleteDocument(collection: string, key: string | number): Promise<object> {
         try {
             const doc = await this.connection?.query('DELETE FROM ?? WHERE ??', [collection, key]);
+            return doc;
+        } catch (e) {
+            return e;
+        }
+    }
+
+    async addDocument(collection: string, tuple: NewDocumentSchema): Promise<object> {
+        try {
+            const doc = await this.connection?.query('INSERT INTO ?? VALUES ??', [collection, tuple]);
             return doc;
         } catch (e) {
             return e;
