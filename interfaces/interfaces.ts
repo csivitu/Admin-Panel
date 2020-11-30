@@ -8,13 +8,17 @@ export interface DocSchema extends Document {
     dbURL: string,
     name: string
 }
+export interface NewDocumentSchema{
+    key: string,
+    value: string,
+}
 
 interface paramsSchema {
     project: string,
     collection: string,
-    key: string | number
+    key: string | number,
+    tuple: NewDocumentSchema,
 }
-
 interface metaSchema {
     $statusCode: number
 }
@@ -22,9 +26,4 @@ interface metaSchema {
 export interface ContextSchema {
     params: paramsSchema,
     meta: metaSchema
-}
-
-export interface NewCollectionSchema{
-    name: string,
-    documents: object
 }
