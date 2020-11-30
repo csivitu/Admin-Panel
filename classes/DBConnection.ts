@@ -14,4 +14,9 @@ export default abstract class DBConnection {
     abstract deleteDocument(_collection: string, _key: string | number): Promise<object>;
 
     abstract addDocument(_collection: string, _tuple: NewDocumentSchema): Promise<object>;
+
+    abstract updateDocument(
+        _collection: string,
+        _keyTuple: NewDocumentSchema,
+         _tuple: NewDocumentSchema): Promise<object>;
 }

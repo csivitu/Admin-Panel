@@ -94,4 +94,21 @@ export default class NOSQLDBConnection extends DBConnection {
                 });
         });
     }
+
+    updateDocument(
+        collection: string,
+        keyTuple: NewDocumentSchema,
+        tuple:NewDocumentSchema,
+    ): Promise<object> {
+        return new Promise((resolve, reject) => {
+            this.connection?.db.collection(collection)
+                .findOneAndUpdate({ keyTuple }, { tuple }, (error: object, msg: object) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(msg);
+                    }
+                });
+        });
+    }
 }

@@ -64,4 +64,17 @@ export default class NOSQLDBConnection extends DBConnection {
             return e;
         }
     }
+
+    async updateDocument(
+        collection: string,
+        keyTuple: NewDocumentSchema,
+        tuple: NewDocumentSchema,
+    ): Promise<object> {
+        try {
+            const doc = await this.connection?.query('UPDATE ?? SET ?? WHERE ??', [collection, keyTuple, tuple]);
+            return doc;
+        } catch (e) {
+            return e;
+        }
+    }
 }
