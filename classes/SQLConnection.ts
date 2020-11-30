@@ -36,4 +36,22 @@ export default class NOSQLDBConnection extends DBConnection {
             return Promise.reject(e);
         }
     }
+
+    async deleteCollection(collection: string): Promise<object> {
+        try {
+            const doc = await this.connection?.query('DROP TABLE ??', [collection]);
+            return doc;
+        } catch (e) {
+            return e;
+        }
+    }
+
+    async deleteDocument(collection: string, key: string | number): Promise<object> {
+        try {
+            const doc = await this.connection?.query('DELETE FROM ?? WHERE ??', [collection, key]);
+            return doc;
+        } catch (e) {
+            return e;
+        }
+    }
 }

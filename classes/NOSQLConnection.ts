@@ -55,4 +55,30 @@ export default class NOSQLDBConnection extends DBConnection {
             );
         });
     }
+
+    deleteCollection(collection: string): Promise<object> {
+        return new Promise((resolve, reject) => {
+            this.connection?.db.collection(collection)
+                .findOneAndDelete({}, (error: object, msg: object) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(msg);
+                    }
+                });
+        });
+    }
+
+    deleteDocument(collection: string, key: string | number): Promise<object> {
+        return new Promise((resolve, reject) => {
+            this.connection?.db.collection(collection)
+                .findOneAndDelete({ key }, (error: object, msg: object) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(msg);
+                    }
+                });
+        });
+    }
 }
