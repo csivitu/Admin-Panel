@@ -11,7 +11,8 @@ export interface DocSchema extends Document {
 
 interface paramsSchema {
     project: string,
-    collection: string
+    collection: string,
+    key: string | number
 }
 
 interface metaSchema {
@@ -21,4 +22,9 @@ interface metaSchema {
 export interface ContextSchema {
     params: paramsSchema,
     meta: metaSchema
+}
+
+export interface NewCollectionSchema{
+    name: string,
+    documents: object
 }
