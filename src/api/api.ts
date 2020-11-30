@@ -18,6 +18,7 @@ broker.createService({
                 'GET export/:project': 'export.listCollections',
                 'DELETE export/:project/:collection': 'export.deleteCollection',
                 'DELETE export/:project/:collection/:key': 'export.deleteDocument',
+                'POST export/:project/:collection/:tuple': 'export.addDocument',
             },
         }],
         port: process.env.PORT || '5001',
