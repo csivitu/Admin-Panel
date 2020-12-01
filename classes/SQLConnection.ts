@@ -47,9 +47,9 @@ export default class NOSQLDBConnection extends DBConnection {
         }
     }
 
-    async deleteDocument(collection: string, key: string | number): Promise<object> {
+    async deleteDocument(collection: string, key: object): Promise<object> {
         try {
-            const doc = await this.connection?.query('DELETE FROM ?? WHERE ??', [collection, key]);
+            const doc = await this.connection?.query('DELETE FROM ?? WHERE ?', [collection, key]);
             return doc;
         } catch (e) {
             return e;
@@ -58,7 +58,8 @@ export default class NOSQLDBConnection extends DBConnection {
 
     async addDocument(collection: string, tuple: NewDocumentSchema): Promise<object> {
         try {
-            const doc = await this.connection?.query('INSERT INTO ?? VALUES ??', [collection, tuple]);
+            console.log(tuple);
+            const doc = await this.connection?.query('INSERT INTO ?? SET ?', [collection, tuple]);
             return doc;
         } catch (e) {
             return e;
