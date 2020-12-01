@@ -9,14 +9,13 @@ export interface DocSchema extends Document {
     name: string
 }
 export interface NewDocumentSchema{
-    key: string,
-    value: string,
+   tuple: object,
 }
 
 interface paramsSchema {
     project: string,
     collection: string,
-    key: string | number,
+    key: object,
     tuple: NewDocumentSchema,
     keyTuple: NewDocumentSchema,
 }
