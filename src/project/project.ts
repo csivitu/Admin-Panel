@@ -46,7 +46,7 @@ broker.createService({
                 const doc = Joi.attempt(ctx.params, joiProjectSchema);
                 const document = await Project.updateOne({
                     name: doc.name,
-                }, doc);
+                }, { $set: doc });
                 const connection = liveConnections[doc.name];
                 if (connection) {
                     connection.closeConnection();

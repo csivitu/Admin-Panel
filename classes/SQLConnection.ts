@@ -12,6 +12,19 @@ export default class NOSQLDBConnection extends DBConnection {
         this.dbURL = dbURL;
     }
 
+    private static whereWrapper(len: number) {
+        let query = '';
+        for (let i = 0; i < len; i += 1) {
+            if (i === 0) {
+                query += 'WHERE ? ';
+            } else {
+                query += 'AND ? ';
+            }
+        }
+        const ret = query.trim();
+        return ret;
+    }
+
     async setupConnection(): Promise<object> {
         const connection = await mysql.createConnection(this.dbURL);
         this.connection = connection;
@@ -43,8 +56,10 @@ export default class NOSQLDBConnection extends DBConnection {
     }
 
     deleteDocument(collection: string, oldDoc: object): Promise<object> {
-        return this.connection?.query('DELETE FROM ?? WHERE ?',
-            [collection, oldDoc]);
+        const docItems = Object.entries(oldDoc).map(([key, value]) => ({ [key]: value }));
+        const wrappedDoc = NOSQLDBConnection.whereWrapper(docItems.length);
+        return this.connection?.query(`DELETE FROM ?? ${wrappedDoc}`,
+            [collection, ...docItems]);
     }
 
     addDocument(collection: string, newDoc: object): Promise<object> {
@@ -52,6 +67,8 @@ export default class NOSQLDBConnection extends DBConnection {
     }
 
     updateDocument(collection: string, oldDoc: object, newDoc: object): Promise<object> {
-        return this.connection?.query('UPDATE ?? SET ? WHERE ?', [collection, newDoc, oldDoc]);
+        const docItems = Object.entries(oldDoc).map(([key, value]) => ({ [key]: value }));
+        const wrappedDoc = NOSQLDBConnection.whereWrapper(docItems.length);
+        return this.connection?.query(`UPDATE ?? SET ? ${wrappedDoc}`, [collection, newDoc, ...docItems]);
     }
 }
