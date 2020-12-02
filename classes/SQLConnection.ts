@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise';
-import { NewDocumentSchema } from '../interfaces/interfaces';
 import DBConnection from './DBConnection';
+import { SQLReturnTypeSChema } from '../interfaces/interfaces';
 
 export default class NOSQLDBConnection extends DBConnection {
     dbURL: string
@@ -31,51 +31,27 @@ export default class NOSQLDBConnection extends DBConnection {
         try {
             const doc = await this.connection?.query('SHOW TABLES', []);
             return JSON.parse(JSON.stringify(doc[0])).map(
-                (i: {[key: string]: string}) => i[Object.keys(i)[0]],
+                (i: SQLReturnTypeSChema) => i[Object.keys(i)[0]],
             );
         } catch (e) {
             return Promise.reject(e);
         }
     }
 
-    async deleteCollection(collection: string): Promise<object> {
-        try {
-            const doc = await this.connection?.query('DROP TABLE ??', [collection]);
-            return doc;
-        } catch (e) {
-            return e;
-        }
+    deleteCollection(collection: string): Promise<object> {
+        return this.connection?.query('DROP TABLE ??', [collection]);
     }
 
-    async deleteDocument(collection: string, key: object): Promise<object> {
-        try {
-            const doc = await this.connection?.query('DELETE FROM ?? WHERE ?', [collection, key]);
-            return doc;
-        } catch (e) {
-            return e;
-        }
+    deleteDocument(collection: string, oldDoc: object): Promise<object> {
+        return this.connection?.query('DELETE FROM ?? WHERE ?',
+            [collection, oldDoc]);
     }
 
-    async addDocument(collection: string, tuple: NewDocumentSchema): Promise<object> {
-        try {
-            console.log(tuple);
-            const doc = await this.connection?.query('INSERT INTO ?? SET ?', [collection, tuple]);
-            return doc;
-        } catch (e) {
-            return e;
-        }
+    addDocument(collection: string, newDoc: object): Promise<object> {
+        return this.connection?.query('INSERT INTO ?? SET ?', [collection, newDoc]);
     }
 
-    async updateDocument(
-        collection: string,
-        keyTuple: NewDocumentSchema,
-        tuple: NewDocumentSchema,
-    ): Promise<object> {
-        try {
-            const doc = await this.connection?.query('UPDATE ?? SET ?? WHERE ??', [collection, keyTuple, tuple]);
-            return doc;
-        } catch (e) {
-            return e;
-        }
+    updateDocument(collection: string, oldDoc: object, newDoc: object): Promise<object> {
+        return this.connection?.query('UPDATE ?? SET ? WHERE ?', [collection, newDoc, oldDoc]);
     }
 }

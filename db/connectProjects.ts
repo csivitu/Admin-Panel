@@ -1,12 +1,9 @@
 import { Project } from './schema';
-import { DocSchema } from '../interfaces/interfaces';
+import { DocSchema, liveConnectionsSchema } from '../interfaces/interfaces';
 import NOSQLConnection from '../classes/NOSQLConnection';
 import SQLConnection from '../classes/SQLConnection';
-import DBConnection from '../classes/DBConnection';
 
-export const liveConnections: {
-    [key: string]: DBConnection,
-   } = {};
+export const liveConnections: liveConnectionsSchema = {};
 
 export async function connectDB(doc: DocSchema) {
     const { dbURL, name } = doc;

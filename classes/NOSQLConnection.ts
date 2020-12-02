@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import DBConnection from './DBConnection';
-import { CollectionSchema, NewDocumentSchema } from '../interfaces/interfaces';
+import { CollectionSchema } from '../interfaces/interfaces';
 
 export default class NOSQLDBConnection extends DBConnection {
     dbURL: string
@@ -56,59 +56,19 @@ export default class NOSQLDBConnection extends DBConnection {
         });
     }
 
+    updateDocument(collection: string, oldDoc: object, newDoc: object): Promise<object> {
+        return this.connection?.db.collection(collection).updateOne(oldDoc, newDoc);
+    }
+
+    addDocument(collection: string, newDoc: object): Promise<object> {
+        return this.connection?.db.collection(collection).insertOne(newDoc);
+    }
+
+    deleteDocument(collection: string, oldDoc: object): Promise<object> {
+        return this.connection?.db.collection(collection).deleteOne(oldDoc);
+    }
+
     deleteCollection(collection: string): Promise<object> {
-        return new Promise((resolve, reject) => {
-            this.connection?.db.collection(collection)
-                .findOneAndDelete({}, (error: object, msg: object) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(msg);
-                    }
-                });
-        });
-    }
-
-    deleteDocument(collection: string, key: object): Promise<object> {
-        return new Promise((resolve, reject) => {
-            this.connection?.db.collection(collection)
-                .findOneAndDelete({ key }, (error: object, msg: object) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(msg);
-                    }
-                });
-        });
-    }
-
-    addDocument(collection: string, tuple: NewDocumentSchema): Promise<object> {
-        return new Promise((resolve, reject) => {
-            this.connection?.db.collection(collection)
-                .insertOne(tuple, (error: object, msg: object) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(msg);
-                    }
-                });
-        });
-    }
-
-    updateDocument(
-        collection: string,
-        keyTuple: NewDocumentSchema,
-        tuple:NewDocumentSchema,
-    ): Promise<object> {
-        return new Promise((resolve, reject) => {
-            this.connection?.db.collection(collection)
-                .findOneAndUpdate(keyTuple, tuple, (error: object, msg: object) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(msg);
-                    }
-                });
-        });
+        return this.connection?.db.collection(collection).drop();
     }
 }

@@ -4,7 +4,7 @@ import { ContextSchema } from '../../interfaces/interfaces';
 
 async function methodWrapper(ctx: ContextSchema, method: string) {
     const {
-        project, collection, key, tuple, keyTuple,
+        project, collection, oldDoc, newDoc,
     } = ctx.params;
     if (!liveConnections[project]) {
         ctx.meta.$statusCode = 400;
@@ -20,20 +20,17 @@ async function methodWrapper(ctx: ContextSchema, method: string) {
             return collections;
         }
         if (method === 'deleteDocument') {
-            const collections = await liveConnections[project].deleteDocument(collection, key);
+            const collections = await liveConnections[project].deleteDocument(collection, oldDoc);
             return collections;
         }
         if (method === 'addDocument') {
-            const collections = await liveConnections[project].addDocument(collection, tuple);
+            const collections = await liveConnections[project].addDocument(collection, newDoc);
             return collections;
         }
 
         if (method === 'updateDocument') {
-            const collections = await liveConnections[project].updateDocument(
-                collection,
-                keyTuple,
-                tuple,
-            );
+            const collections = await liveConnections[project]
+                .updateDocument(collection, oldDoc, newDoc);
             return collections;
         }
         const data = await liveConnections[project].exportCollection(collection);
@@ -50,9 +47,6 @@ broker.createService({
         listCollections(ctx) {
             return methodWrapper(ctx, 'listCollections');
         },
-        exportCollection(ctx) {
-            return methodWrapper(ctx, 'exportCollection');
-        },
         deleteCollection(ctx) {
             return methodWrapper(ctx, 'deleteCollection');
         },
@@ -64,6 +58,9 @@ broker.createService({
         },
         updateDocument(ctx) {
             return methodWrapper(ctx, 'updateDocument');
+        },
+        exportCollection(ctx) {
+            return methodWrapper(ctx, 'exportCollection');
         },
     },
 });
