@@ -14,7 +14,7 @@ export interface liveConnectionsSchema {
         [key: string]: DBConnection
 }
 
-export interface SQLReturnTypeSChema {
+export interface SQLReturnTypeSchema {
     [key: string]: string
 }
 
