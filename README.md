@@ -112,6 +112,22 @@ npm start
 yarn start
 ```
 
+## API Endpoints
+
+|Request Type| Route | Function |
+|:-----------:|:------:|:---------:|
+| GET| /project | To list all the projects present in the database |
+| GET | /project/:name | To get a specific project from the database |
+| POST | /project | To create a new project in the database |
+|  PUT | /project/:name | To update anything in the project |
+| DELETE | /project/:name | To delete a project in the database |
+| GET | /export/:project | To a export a project present in our database | 
+| GET | /export/:project/:collection | To export a collection present inside the project we are exporting |
+| DELETE | /export/:project/:collection | To delete a collection present in our project |
+| DELETE | /export/:project/:collection/document | To delete an document in a collection |
+| POST | /export/:project/:collection | To add a document in a collection |
+| PUT | /export/:project/:collection | To update a document in a collection |
+
 
 
 <!-- ROADMAP -->
