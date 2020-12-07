@@ -14,7 +14,7 @@
   <h3 align="center">Admin-Panel</h3>
 
   <p align="center">
-    A all-use API built in Typescript to perform admin operations on various databases 
+    An all-use API built in Typescript to perform admin operations on various databases 
     <br />
     <a href="https://github.com/csivitu/repo"><strong>Explore the docs »</strong></a>
     <br />
