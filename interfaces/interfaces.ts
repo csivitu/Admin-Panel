@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import DBConnection from '../classes/DBConnection';
 
 export interface CollectionSchema {
     name: string
@@ -9,9 +10,19 @@ export interface DocSchema extends Document {
     name: string
 }
 
+export interface liveConnectionsSchema {
+        [key: string]: DBConnection
+}
+
+export interface SQLReturnTypeSchema {
+    [key: string]: string
+}
+
 interface paramsSchema {
     project: string,
-    collection: string
+    collection: string,
+    oldDoc: object,
+    newDoc: object
 }
 
 interface metaSchema {

@@ -11,10 +11,10 @@
     <img src="https://csivit.com/images/favicon.png" alt="Logo" width="80">
   </a>
 
-  <h3 align="center">YOUR_TITLE</h3>
+  <h3 align="center">Admin-Panel</h3>
 
   <p align="center">
-    YOUR_SHORT_DESCRIPTION
+    An all-use API built in Typescript to perform admin operations on various databases 
     <br />
     <a href="https://github.com/csivitu/repo"><strong>Explore the docs »</strong></a>
     <br />
@@ -48,18 +48,17 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+**Admin-Panel** is REST API built in Typescript built for the purpose of performing admin operations on any database be it SQL or NOSQL. The API takes the user's database URL and connects to it. <br>
+This API makes use of [Molecular](https://moleculer.services/docs/0.14/index.html) a fast, modern and powerful microservices framework for Node.js. It helps you to build efficient, reliable & scalable services. You can perform various **CRUD** operations with the help of this API.
 
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`github_username`, `repo`, `twitter_handle`, `email`
+
 
 
 ### Built With
 
-* []()
-* []()
-* []()
+* [Typescript](https://www.typescriptlang.org/)
+* [Node](https://nodejs.org/en/)
+* [Molecular](https://moleculer.services/docs/0.14/index.html)
 
 
 
@@ -71,30 +70,63 @@ To get a local copy up and running follow these simple steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
-```sh
-npm install npm@latest -g
-```
+* [npm](https://www.npmjs.com/)
+* [mysql2](https://www.npmjs.com/package/mysql2)
+* [molecular](https://www.npmjs.com/package/moleculer)
+* [molecular-web](https://www.npmjs.com/package/moleculer-web)
+
+
 
 ### Installation
  
 1. Clone the repo
 ```sh
-git clone https://github.com/github_username/repo.git
+git clone https://github.com/csivitu/Admin-Panel.git
 ```
-2. Install NPM packages
+2. Install NPM packages using (npm or yarn).
+
+#### Using npm
 ```sh
 npm install
 ```
+#### Using yarn
 
+```sh
+yarn install
+```
 
+**Note:**  If installing the packages with npm you get errors use yarn to install them.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+To run this project locally, you can run the following command. 
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+#### Using npm
+```sh
+npm start
+```
+#### Using yarn
+
+```sh
+yarn start
+```
+
+## API Endpoints
+
+|Request Type| Route | Function |
+|:-----------:|:------:|:---------:|
+| GET| /project | To list all the projects present in the database |
+| GET | /project/:name | To get a specific project from the database |
+| POST | /project | To create a new project in the database |
+|  PUT | /project/:name | To update anything in the project |
+| DELETE | /project/:name | To delete a project in the database |
+| GET | /export/:project | To a export a project present in our database | 
+| GET | /export/:project/:collection | To export a collection present inside the project we are exporting |
+| DELETE | /export/:project/:collection | To delete a collection present in our project |
+| DELETE | /export/:project/:collection/document | To delete an document in a collection |
+| POST | /export/:project/:collection | To add a document in a collection |
+| PUT | /export/:project/:collection | To update a document in a collection |
 
 
 
