@@ -119,7 +119,7 @@ yarn start
 | GET| /project | To list all the projects present in the database |
 | GET | /project/:name | To get a specific project from the database |
 | POST | /project | To create a new project in the database |
-|  PUT | /project/:name | To update anything in the project |
+| PUT | /project/:name | To update anything in the project |
 | DELETE | /project/:name | To delete a project in the database |
 | GET | /export/:project | To a export a project present in our database | 
 | GET | /export/:project/:collection | To export a collection present inside the project we are exporting |

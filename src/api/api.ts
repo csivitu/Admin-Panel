@@ -1,5 +1,6 @@
 import ApiService from 'moleculer-web';
 import broker from '../../misc/broker';
+import auth from '../../misc/auth';
 
 const { ALLOWED_ORIGINS } = process.env;
 
@@ -7,6 +8,9 @@ broker.createService({
     mixins: [ApiService],
     name: 'api',
     settings: {
+        use: [
+            auth,
+        ],
         routes: [{
             aliases: {
                 'GET project': 'project.list',
