@@ -22,7 +22,8 @@ interface paramsSchema {
     project: string,
     collection: string,
     oldDoc: object,
-    newDoc: object
+    newDoc: object,
+    count: boolean
 }
 
 interface metaSchema {

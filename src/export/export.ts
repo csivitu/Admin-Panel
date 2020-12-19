@@ -4,36 +4,40 @@ import { ContextSchema } from '../../interfaces/interfaces';
 
 async function methodWrapper(ctx: ContextSchema, method: string) {
     const {
-        project, collection, oldDoc, newDoc,
+        project, collection, oldDoc, newDoc, count,
     } = ctx.params;
-    if (!liveConnections[project]) {
+    const connection = liveConnections[project];
+    if (!connection) {
         ctx.meta.$statusCode = 400;
         return { error: 'Error: invalid project or could not connect to project database' };
     }
     try {
         if (method === 'listCollections') {
-            const collections = await liveConnections[project].listCollections();
+            const collections = await connection.listCollections();
             return collections;
         }
         if (method === 'deleteCollection') {
-            const collections = await liveConnections[project].deleteCollection(collection);
+            const collections = await connection.deleteCollection(collection);
             return collections;
         }
         if (method === 'deleteDocument') {
-            const collections = await liveConnections[project].deleteDocument(collection, oldDoc);
+            const collections = await connection.deleteDocument(collection, oldDoc);
             return collections;
         }
         if (method === 'addDocument') {
-            const collections = await liveConnections[project].addDocument(collection, newDoc);
+            const collections = await connection.addDocument(collection, newDoc);
             return collections;
         }
 
         if (method === 'updateDocument') {
-            const collections = await liveConnections[project]
+            const collections = await connection
                 .updateDocument(collection, oldDoc, newDoc);
             return collections;
         }
-        const data = await liveConnections[project].exportCollection(collection);
+        const data = await connection.exportCollection(collection);
+        if (count) {
+            return data.length;
+        }
         return data;
     } catch (e) {
         ctx.meta.$statusCode = 400;

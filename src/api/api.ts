@@ -8,9 +8,7 @@ broker.createService({
     mixins: [ApiService],
     name: 'api',
     settings: {
-        use: [
-            auth,
-        ],
+        use: [auth],
         routes: [{
             aliases: {
                 'GET project': 'project.list',

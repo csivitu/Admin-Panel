@@ -12,7 +12,7 @@ export default abstract class DBConnection {
 
     abstract closeConnection(): Promise<void>;
 
-    abstract exportCollection(_collection: string): Promise<object>;
+    abstract exportCollection(_collection: string): Promise<object[]>;
 
     abstract listCollections(): Promise<object>;
 }

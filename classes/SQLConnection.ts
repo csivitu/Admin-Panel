@@ -1,7 +1,7 @@
 import mysql from 'mysql2/promise';
 import DBConnection from './DBConnection';
 import { SQLReturnTypeSchema } from '../interfaces/interfaces';
-import whereWrapper from '../utils/whereWrapper';
+import whereWrapper from '../misc/whereWrapper';
 
 export default class NOSQLDBConnection extends DBConnection {
     dbURL: string
@@ -23,9 +23,9 @@ export default class NOSQLDBConnection extends DBConnection {
         return this.connection?.end();
     }
 
-    async exportCollection(collection: string): Promise<object> {
+    async exportCollection(collection: string): Promise<object[]> {
         const data = await this.connection?.query('SELECT * FROM ??', [collection]);
-        return data[0];
+        return <object[]>data[0];
     }
 
     async listCollections(): Promise<object> {
